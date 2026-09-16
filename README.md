@@ -112,4 +112,13 @@ Para editar um slide, procure pelo texto direto no `index.html`. Cada slide é u
 `<section class="slide">` com `data-title` (o nome que aparece na grade),
 `data-block` (1, 2 ou 3) e `data-blockname` (o texto da régua lateral).
 
+## Ao editar o CSS ou o JavaScript
+
+Os dois arquivos são carregados com um número de versão no final
+(`assets/app.js?v=2`). Navegadores guardam esses arquivos em cache por bastante
+tempo, então quem já abriu a apresentação continuaria vendo a versão antiga
+depois de uma alteração sua. Ao mexer em `style.css` ou `app.js`, aumente o `v=`
+nas duas linhas do topo do `index.html`. Editar só o texto dos slides não exige
+nada disso.
+
 Para publicar online: suba a pasta num repositório e ligue o GitHub Pages.
