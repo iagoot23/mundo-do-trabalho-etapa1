@@ -43,6 +43,12 @@
     return +items[items.length - 1].getAttribute('data-reveal');
   }
 
+  function slideFromHash() {
+    var n = parseInt(location.hash.replace('#', ''), 10);
+    if (isNaN(n) || n < 1 || n > slides.length) return null;
+    return n - 1;
+  }
+
   function go(index, opts) {
     opts = opts || {};
     index = Math.max(0, Math.min(slides.length - 1, index));
@@ -461,10 +467,14 @@
     $('[data-help-close]').addEventListener('click', function () { $('.help').classList.remove('is-on'); });
     $('[data-overview-close]').addEventListener('click', function () { toggleOverview(false); });
 
-    var start = 0;
-    var fromHash = parseInt(location.hash.replace('#', ''), 10);
-    if (fromHash > 0 && fromHash <= slides.length) start = fromHash - 1;
-    go(start);
+    // Um link como #42 deve funcionar tanto ao abrir quanto colado numa aba ja aberta.
+    window.addEventListener('hashchange', function () {
+      var n = slideFromHash();
+      if (n !== null && n !== current) go(n);
+    });
+
+    var start = slideFromHash();
+    go(start === null ? 0 : start);
   }
 
   if (document.readyState === 'loading') {
