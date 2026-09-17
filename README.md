@@ -101,7 +101,7 @@ livro (p. 38–39). A tracklist de 5 faixas é acréscimo.
 
 **Portfólio → repositório GitHub.** O livro admite portfólio físico ou digital
 (p. 24) e deixa o formato a cargo do docente. Aqui ele é o repositório público
-`portfolio-mundo-trabalho`, com landing page feita por vibe coding e publicada no
+`portfolio`, com landing page feita por vibe coding e publicada no
 GitHub Pages. Toda atividade concluída vira um card nessa página.
 
 **PROCESSO.md.** Como todas as entregas passam por IA, cada uma exige um arquivo
