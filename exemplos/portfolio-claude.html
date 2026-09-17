@@ -1,0 +1,1198 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Iago Teixeira Pereira — Software e Hardware</title>
+  <meta name="description" content="Portfólio de Iago Teixeira Pereira: eletrônica, informática e games.">
+
+  <!-- =========================================================
+       FONTES (Google Fonts)
+       JetBrains Mono = títulos (cara de terminal)
+       IBM Plex Sans  = textos corridos (boa leitura)
+       ========================================================= -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&family=JetBrains+Mono:wght@400;700;800&display=swap" rel="stylesheet">
+
+  <style>
+    /* =========================================================
+       1. VARIÁVEIS DE COR (paleta Neon Noturno)
+       Todas as cores da página saem daqui. Trocou aqui, troca em tudo.
+       ========================================================= */
+    :root {
+      --fundo:      #0D0F1A;
+      --texto:      #E6E8F2;
+      --primaria:   #00E5FF;  /* ciano neon */
+      --secundaria: #7C3AED;  /* roxo */
+      --destaque:   #FF2E88;  /* rosa neon */
+      --texto-suave: #A9AEC4;
+      --painel:     rgba(13, 15, 26, 0.82);
+      --predio:     #151829;
+      --brilho:     0 0 6px var(--primaria), 0 0 18px rgba(0, 229, 255, 0.55);
+      --brilho-rosa: 0 0 6px var(--destaque), 0 0 18px rgba(255, 46, 136, 0.55);
+
+      --fonte-titulo: "JetBrains Mono", "Consolas", monospace;
+      --fonte-texto:  "IBM Plex Sans", "Segoe UI", system-ui, sans-serif;
+    }
+
+    /* Tema claro: mesmas cores, só que mais escuras para dar contraste
+       em fundo claro (neon puro em fundo branco fica ilegível). */
+    :root[data-theme="claro"] {
+      --fundo:      #E9ECF5;
+      --texto:      #0D0F1A;
+      --primaria:   #00707D;
+      --secundaria: #5B21B6;
+      --destaque:   #B8155A;
+      --texto-suave: #3E4358;
+      --painel:     rgba(255, 255, 255, 0.86);
+      --predio:     #C9CEE0;
+      --brilho:     0 0 0 transparent;
+      --brilho-rosa: 0 0 0 transparent;
+    }
+
+    /* =========================================================
+       2. BASE
+       ========================================================= */
+    *, *::before, *::after { box-sizing: border-box; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      margin: 0;
+      background: var(--fundo);
+      color: var(--texto);
+      font-family: var(--fonte-texto);
+      font-size: 1.0625rem;
+      line-height: 1.6;
+      overflow-x: hidden;
+      transition: background-color 0.5s, color 0.5s;
+    }
+
+    h1, h2, h3 { font-family: var(--fonte-titulo); line-height: 1.15; margin: 0; }
+
+    a { color: var(--primaria); }
+
+    img, svg { max-width: 100%; }
+
+    /* Foco visível para quem navega pelo teclado */
+    :focus-visible {
+      outline: 2px dashed var(--destaque);
+      outline-offset: 3px;
+    }
+
+    .container {
+      width: min(1080px, 100% - 2.5rem);
+      margin-inline: auto;
+    }
+
+    /* =========================================================
+       3. CENÁRIO DE FUNDO: cidade + chuva
+       Ficam "presos" atrás de tudo (position: fixed; z-index negativo).
+       ========================================================= */
+    #cidade {
+      position: fixed;
+      inset: auto 0 0 0;
+      width: 100%;
+      height: 55vh;
+      z-index: -2;
+      pointer-events: none;
+    }
+    #cidade .predio { fill: var(--predio); transition: fill 0.5s; }
+
+    #chuva {
+      position: fixed;
+      inset: 0;
+      z-index: -1;
+      pointer-events: none;
+    }
+
+    /* Película escura: a página começa com "a luz apagada".
+       pointer-events: none deixa clicar em tudo mesmo com ela por cima. */
+    #apagao {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.78);
+      z-index: 40;
+      pointer-events: none;
+      transition: opacity 0.8s;
+    }
+    body.luz-acesa #apagao { opacity: 0; }
+
+    /* =========================================================
+       4. MENU FIXO NO TOPO
+       ========================================================= */
+    .menu {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 30;
+      background: var(--painel);
+      backdrop-filter: blur(6px);
+      border-bottom: 1px solid color-mix(in srgb, var(--primaria) 40%, transparent);
+    }
+    .menu .container {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      min-height: 60px;
+      flex-wrap: wrap;
+      padding-block: 0.4rem;
+    }
+    .menu-logo {
+      font-family: var(--fonte-titulo);
+      font-weight: 700;
+      color: var(--primaria);
+      text-decoration: none;
+      white-space: nowrap;
+    }
+    .menu ul {
+      display: flex;
+      gap: 1.1rem;
+      list-style: none;
+      margin: 0 auto 0 0;
+      padding: 0;
+      flex-wrap: wrap;
+    }
+    .menu ul a {
+      color: var(--texto);
+      text-decoration: none;
+      font-size: 0.95rem;
+    }
+    .menu ul a:hover { color: var(--primaria); }
+
+    .contador {
+      font-family: var(--fonte-titulo);
+      font-size: 0.8rem;
+      color: var(--texto-suave);
+    }
+
+    /* Em telas pequenas o menu vira uma linha que rola para o lado */
+    @media (max-width: 700px) {
+      .menu ul { order: 3; width: 100%; overflow-x: auto; flex-wrap: nowrap; margin: 0; }
+      .contador { display: none; }
+    }
+
+    /* =========================================================
+       5. BOTÕES: contorno que se preenche no hover
+       O ::before é uma "tinta" que cresce da esquerda para a direita.
+       ========================================================= */
+    .botao {
+      position: relative;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.6rem 1.1rem;
+      border: 2px solid var(--primaria);
+      background: transparent;
+      color: var(--primaria);
+      font: 700 0.9rem var(--fonte-titulo);
+      text-decoration: none;
+      cursor: pointer;
+      overflow: hidden;
+      isolation: isolate;
+      transition: color 0.35s;
+    }
+    .botao::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: var(--primaria);
+      transform: scaleX(0);
+      transform-origin: left;
+      transition: transform 0.35s;
+      z-index: -1;
+    }
+    .botao:hover, .botao:focus-visible { color: var(--fundo); }
+    .botao:hover::before, .botao:focus-visible::before { transform: scaleX(1); }
+
+    .botao.rosa { border-color: var(--destaque); color: var(--destaque); }
+    .botao.rosa::before { background: var(--destaque); }
+
+    .botao-pequeno { padding: 0.35rem 0.7rem; font-size: 0.78rem; }
+
+    /* =========================================================
+       6. TOPO (HERO): cartão de visita no meio da tela
+       ========================================================= */
+    .hero {
+      min-height: 100svh;
+      display: grid;
+      place-items: center;
+      padding: 6rem 0 3rem;
+    }
+
+    .cartao {
+      position: relative;
+      z-index: 50; /* fica ACIMA da película escura */
+      width: min(620px, 100%);
+      display: grid;
+      grid-template-columns: auto 1fr;
+      gap: 1.6rem;
+      align-items: center;
+      padding: 2rem;
+      background: var(--painel);
+      border: 2px solid color-mix(in srgb, var(--primaria) 30%, transparent);
+      transition: border-color 0.6s, box-shadow 0.6s;
+    }
+    body.luz-acesa .cartao {
+      border-color: var(--primaria);
+      box-shadow: var(--brilho);
+      /* Com a luz acesa a pelicula ja sumiu (opacity: 0), entao o cartao nao
+         precisa mais ficar elevado. Se continuasse em z-index 50 ele passaria
+         por cima do menu fixo (z-index 30) ao rolar a pagina. */
+      z-index: 1;
+    }
+
+    @media (max-width: 560px) {
+      .cartao { grid-template-columns: 1fr; text-align: center; padding: 1.5rem; }
+      .cartao .polaroid { margin-inline: auto; }
+      .cartao .acoes, .cartao .tags { justify-content: center; }
+    }
+
+    /* Foto estilo polaroid, levemente torta */
+    .polaroid {
+      width: 150px;
+      background: #F4F4F0;
+      padding: 10px 10px 34px;
+      transform: rotate(-5deg);
+      box-shadow: 4px 6px 0 rgba(0, 0, 0, 0.45);
+      position: relative;
+    }
+    .polaroid img, .polaroid svg { display: block; width: 100%; aspect-ratio: 1; }
+    .polaroid figcaption {
+      position: absolute;
+      bottom: 6px; left: 0; right: 0;
+      text-align: center;
+      font: 400 0.75rem var(--fonte-titulo);
+      color: #333;
+    }
+
+    /* O Tux fica sentado em cima da polaroid (detalhe só desta página) */
+    .tux-sentado {
+      position: absolute;
+      width: 46px;
+      top: -34px;
+      right: -14px;
+      transform: rotate(8deg);
+    }
+
+    /* Nome grande. Clicar solta confete. */
+    .nome {
+      font-size: clamp(1.7rem, 5vw, 2.4rem);
+      font-weight: 800;
+      background: none;
+      border: 0;
+      padding: 0;
+      color: var(--texto);
+      font-family: var(--fonte-titulo);
+      text-align: inherit;
+      cursor: pointer;
+      line-height: 1.1;
+      transition: color 0.6s, text-shadow 0.6s;
+    }
+    body.luz-acesa .nome { color: var(--primaria); text-shadow: var(--brilho); }
+
+    .frase {
+      font-family: var(--fonte-titulo);
+      color: var(--destaque);
+      margin: 0.4rem 0 0.2rem;
+      font-size: 1.05rem;
+    }
+    .local { color: var(--texto-suave); margin: 0 0 0.8rem; font-size: 0.95rem; }
+
+    .tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.4rem;
+      list-style: none;
+      padding: 0;
+      margin: 0 0 1.1rem;
+    }
+    .tags li {
+      border: 1px solid var(--secundaria);
+      padding: 0.1rem 0.55rem;
+      font-size: 0.85rem;
+    }
+
+    .acoes { display: flex; flex-wrap: wrap; gap: 0.6rem; align-items: center; }
+
+    /* Interruptor de luz (parece o de parede) */
+    .interruptor {
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+      margin: 0 auto 1.4rem;
+      background: none;
+      border: 0;
+      color: var(--texto);
+      font: 700 0.9rem var(--fonte-titulo);
+      cursor: pointer;
+      position: relative;
+      z-index: 50;
+    }
+    .espelho {
+      width: 34px;
+      height: 52px;
+      background: #D9DCE6;
+      border-radius: 6px;
+      display: grid;
+      place-items: center;
+      box-shadow: inset 0 0 0 2px #9EA3B5;
+    }
+    .tecla {
+      width: 16px;
+      height: 28px;
+      background: #F6F7FB;
+      border-radius: 3px;
+      box-shadow: 0 5px 0 #8A8FA3;         /* tecla para baixo = desligado */
+      transition: box-shadow 0.3s, transform 0.3s;
+    }
+    body.luz-acesa .tecla {
+      box-shadow: 0 -5px 0 #8A8FA3;        /* tecla para cima = ligado */
+      transform: translateY(4px);
+    }
+    /* Cartão e interruptor lado a lado (no celular, um embaixo do outro) */
+    .hero-conteudo {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 2.5rem;
+      width: 100%;
+      flex-wrap: wrap;
+    }
+    .lado-interruptor {
+      display: grid;
+      justify-items: center;
+      gap: 1rem;
+      position: relative;
+      z-index: 50; /* acima da película escura */
+    }
+    /* Mesmo motivo do cartao: volta ao nivel normal quando a luz acende. */
+    body.luz-acesa .lado-interruptor { z-index: 1; }
+
+    /* Texto forte em neon pedindo para apertar */
+    .chamada-neon {
+      margin: 0;
+      text-align: center;
+      font: 800 clamp(1.5rem, 4vw, 2.2rem)/1.1 var(--fonte-titulo);
+      color: var(--destaque);
+      text-shadow: 0 0 4px var(--destaque), 0 0 14px var(--destaque), 0 0 34px rgba(255, 46, 136, 0.8);
+      animation: chamar 1.6s ease-in-out infinite;
+    }
+    /* Pulsa devagar para chamar atenção enquanto a luz está apagada */
+    @keyframes chamar {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.55; }
+    }
+    /* Depois de acender, para de pulsar e troca para a cor primária */
+    body.luz-acesa .chamada-neon {
+      animation: none;
+      color: var(--primaria);
+      text-shadow: var(--brilho);
+    }
+    :root[data-theme="claro"] .chamada-neon { text-shadow: none; }
+
+    /* Animação de saída do interruptor depois de acender a luz */
+    .lado-interruptor {
+      transition: opacity 0.6s, transform 0.6s;
+    }
+    .lado-interruptor.sumindo {
+      opacity: 0;
+      transform: scale(0.85);
+    }
+    .lado-interruptor[hidden] { display: none; }
+
+    /* Interruptor um pouco maior, já que agora é peça principal */
+    .espelho { width: 48px; height: 74px; }
+    .tecla { width: 22px; height: 40px; }
+    .interruptor { flex-direction: column; margin: 0; }
+
+    /* Piscada de lâmpada neon quando acende */
+    @keyframes acender {
+      0%, 18%, 22%, 40%, 44% { opacity: 1; }
+      20%, 42% { opacity: 0.25; }
+      100% { opacity: 1; }
+    }
+    body.luz-acesa .neon-pisca { animation: acender 0.8s ease-out 1; }
+
+    /* =========================================================
+       7. SEÇÕES
+       ========================================================= */
+    section { padding: 4.5rem 0; scroll-margin-top: 70px; }
+
+    .titulo-secao {
+      font-size: clamp(1.5rem, 4vw, 2.1rem);
+      margin-bottom: 1.4rem;
+      color: var(--texto);
+    }
+    .titulo-secao .prompt { color: var(--destaque); }
+
+    .painel {
+      background: var(--painel);
+      border-left: 3px solid var(--secundaria);
+      padding: 1.6rem;
+      max-width: 70ch;
+    }
+    .painel p { margin: 0 0 1rem; }
+    .painel p:last-child { margin-bottom: 0; }
+
+    /* Revelar ao rolar: começa borrado e fica nítido */
+    .revelar {
+      opacity: 0;
+      filter: blur(10px);
+      transition: opacity 0.7s ease-out, filter 0.7s ease-out;
+    }
+    .revelar.visivel { opacity: 1; filter: blur(0); }
+
+    /* =========================================================
+       8. LETREIRO NEON com o carrossel de entregas
+       ========================================================= */
+    .letreiro-suporte {
+      display: flex;
+      justify-content: space-around;
+      height: 34px;
+      max-width: 60%;
+      margin: 0 auto;
+    }
+    .letreiro-suporte span {
+      width: 3px;
+      background: repeating-linear-gradient(var(--texto-suave) 0 5px, transparent 5px 8px);
+    }
+
+    .letreiro {
+      border: 4px solid var(--destaque);
+      box-shadow: var(--brilho-rosa), inset 0 0 18px rgba(255, 46, 136, 0.25);
+      border-radius: 18px;
+      padding: 1.2rem 1rem 1.4rem;
+      background: var(--painel);
+    }
+
+    .letreiro-titulo {
+      text-align: center;
+      font-size: clamp(1.6rem, 6vw, 2.8rem);
+      font-weight: 800;
+      color: var(--destaque);
+      text-shadow: var(--brilho-rosa);
+      margin-bottom: 0.2rem;
+      letter-spacing: 0.08em;
+    }
+    .letreiro-sub {
+      text-align: center;
+      color: var(--texto-suave);
+      margin: 0 0 1rem;
+      font-size: 0.95rem;
+    }
+
+    /* Trilho do carrossel: rola para o lado e "gruda" em cada card */
+    .trilho {
+      display: flex;
+      gap: 1rem;
+      overflow-x: auto;
+      scroll-snap-type: x mandatory;
+      scroll-behavior: smooth;
+      padding: 0.4rem 0.2rem 0.8rem;
+      list-style: none;
+      margin: 0;
+      scrollbar-width: thin;
+      scrollbar-color: var(--secundaria) transparent;
+    }
+
+    .card {
+      flex: 0 0 min(290px, 82%);
+      scroll-snap-align: start;
+      border: 2px solid var(--primaria);
+      background: var(--fundo);
+      padding: 1.1rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.45rem;
+      transition: background-color 0.35s, color 0.35s;
+    }
+    .card-numero { font: 700 0.85rem var(--fonte-titulo); color: var(--primaria); }
+    .card h3 { font-size: 1.15rem; }
+    .card-data { font-size: 0.85rem; color: var(--texto-suave); }
+    .card p { margin: 0; font-size: 0.95rem; flex: 1; }
+    .card .rodape-card { display: flex; justify-content: space-between; align-items: center; gap: 0.5rem; margin-top: 0.4rem; }
+
+    .selo {
+      font: 700 0.72rem var(--fonte-titulo);
+      padding: 0.15rem 0.45rem;
+      border: 1px solid currentColor;
+    }
+    .selo.concluida { color: var(--primaria); }
+    .selo.em-breve  { color: var(--texto-suave); }
+
+    /* Hover: as cores se invertem (só em cards concluídos) */
+    .card.concluida:hover,
+    .card.concluida:focus-within {
+      background: var(--primaria);
+      color: var(--fundo);
+    }
+    .card.concluida:hover .card-numero,
+    .card.concluida:hover .card-data,
+    .card.concluida:hover .selo,
+    .card.concluida:focus-within .card-numero,
+    .card.concluida:focus-within .card-data,
+    .card.concluida:focus-within .selo { color: var(--fundo); }
+    .card.concluida:hover .botao,
+    .card.concluida:focus-within .botao { border-color: var(--fundo); color: var(--fundo); }
+    .card.concluida:hover .botao::before { background: var(--fundo); }
+    .card.concluida .botao:hover { color: var(--primaria); }
+
+    /* Card "Em breve": apagado e sem link */
+    .card.em-breve {
+      opacity: 0.45;
+      filter: grayscale(0.8);
+      border-style: dashed;
+      border-color: var(--texto-suave);
+    }
+
+    /* Controle remoto embaixo do letreiro */
+    .controle {
+      width: 150px;
+      margin: 1.2rem auto 0;
+      background: #1E2133;
+      border-radius: 22px 22px 14px 14px;
+      padding: 0.7rem 0.9rem 0.9rem;
+      box-shadow: 0 6px 0 #0A0B12;
+      display: grid;
+      justify-items: center;
+      gap: 0.5rem;
+    }
+    .led {
+      width: 8px; height: 8px; border-radius: 50%;
+      background: #4A1027;
+      transition: background-color 0.15s, box-shadow 0.15s;
+    }
+    .led.ligado { background: var(--destaque); box-shadow: var(--brilho-rosa); }
+    .controle-botoes { display: flex; gap: 1.2rem; }
+    .controle button {
+      width: 44px; height: 44px;
+      border-radius: 50%;
+      border: 0;
+      background: #3A3F5C;
+      color: #E6E8F2;
+      font: 800 1.1rem var(--fonte-titulo);
+      cursor: pointer;
+      box-shadow: 0 4px 0 #0A0B12;
+      transition: transform 0.1s, box-shadow 0.1s;
+    }
+    .controle button:active { transform: translateY(3px); box-shadow: 0 1px 0 #0A0B12; }
+    .controle small { color: #A9AEC4; font: 400 0.7rem var(--fonte-titulo); }
+
+    /* =========================================================
+       9. MANIFESTO: tela de computador retrô (monitor CRT)
+       ========================================================= */
+    .crt {
+      position: relative;
+      background: #06140F;
+      color: #B6FFD9;
+      border: 12px solid #2A2D3E;
+      border-radius: 20px;
+      padding: 1.6rem;
+      max-width: 70ch;
+      font-family: var(--fonte-titulo);
+      font-size: 0.95rem;
+      box-shadow: inset 0 0 40px rgba(0, 0, 0, 0.8);
+    }
+    /* Linhas horizontais de monitor antigo */
+    .crt::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: repeating-linear-gradient(rgba(0, 0, 0, 0.22) 0 1px, transparent 1px 3px);
+      pointer-events: none;
+      border-radius: 8px;
+    }
+    .crt-texto {
+      max-height: 7.5em;         /* recolhido: mostra só o começo */
+      overflow: hidden;
+      transition: max-height 0.8s ease;
+    }
+    .crt-texto.aberto { max-height: 400em; }
+    .crt p { margin: 0 0 1rem; }
+    .crt .botao { margin-top: 1rem; border-color: #B6FFD9; color: #B6FFD9; position: relative; z-index: 1; }
+    .crt .botao::before { background: #B6FFD9; }
+    .crt .botao:hover { color: #06140F; }
+
+    /* =========================================================
+       10. RODAPÉ
+       ========================================================= */
+    footer {
+      background: var(--painel);
+      border-top: 1px solid var(--secundaria);
+      padding: 2rem 0 5rem;
+    }
+    footer .container { display: flex; flex-wrap: wrap; gap: 1rem; justify-content: space-between; align-items: center; }
+    footer p { margin: 0; color: var(--texto-suave); font-size: 0.9rem; }
+
+    /* =========================================================
+       11. EXTRAS: cursor, confete e Tux do easter egg
+       ========================================================= */
+    #confete { position: fixed; inset: 0; pointer-events: none; z-index: 90; }
+
+    .cursor {
+      position: fixed;
+      top: 0; left: 0;
+      width: 26px; height: 26px;
+      border: 2px solid var(--primaria);
+      border-radius: 50%;
+      pointer-events: none;
+      z-index: 100;
+      transform: translate(-50%, -50%);
+      transition: width 0.2s, height 0.2s, border-color 0.2s;
+      display: none;
+    }
+    .cursor::after {
+      content: "";
+      position: absolute;
+      top: 50%; left: 50%;
+      width: 4px; height: 4px;
+      background: var(--destaque);
+      border-radius: 50%;
+      transform: translate(-50%, -50%);
+    }
+    .cursor.sobre-link { width: 42px; height: 42px; border-color: var(--destaque); }
+
+    /* Só troca o cursor em aparelhos com mouse (celular não tem cursor) */
+    @media (pointer: fine) {
+      body.cursor-ativo, body.cursor-ativo a, body.cursor-ativo button { cursor: none; }
+      body.cursor-ativo .cursor { display: block; }
+    }
+
+    #tux-surpresa {
+      position: fixed;
+      top: 50%; left: 50%;
+      z-index: 95;
+      display: grid;
+      justify-items: center;
+      gap: 0.5rem;
+      transform: translate(-50%, -50%) scale(0);
+      transition: transform 0.5s cubic-bezier(.3, 1.6, .6, 1);
+      pointer-events: none;
+    }
+    #tux-surpresa.aparece { transform: translate(-50%, -50%) scale(1); }
+    #tux-surpresa svg { width: 160px; }
+    .balao {
+      background: var(--texto);
+      color: var(--fundo);
+      font: 700 1rem var(--fonte-titulo);
+      padding: 0.5rem 0.9rem;
+      border-radius: 12px;
+    }
+    @keyframes acenar {
+      0%, 100% { transform: rotate(0); }
+      50% { transform: rotate(-25deg); }
+    }
+    #tux-surpresa.aparece .asa-acenando {
+      transform-origin: 30px 70px;
+      animation: acenar 0.5s ease-in-out 3;
+    }
+
+    /* =========================================================
+       12. ACESSIBILIDADE: quem pediu "reduzir movimento"
+       não vê animação nenhuma.
+       ========================================================= */
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        animation: none !important;
+        transition: none !important;
+        scroll-behavior: auto !important;
+      }
+      .revelar { opacity: 1; filter: none; }
+    }
+  </style>
+</head>
+
+<body>
+  <!-- Cenário: cidade (desenhada pelo JavaScript) e chuva (canvas) -->
+  <svg id="cidade" viewBox="0 0 1200 400" preserveAspectRatio="xMidYMax slice" aria-hidden="true"></svg>
+  <canvas id="chuva" aria-hidden="true"></canvas>
+  <div id="apagao" aria-hidden="true"></div>
+  <canvas id="confete" aria-hidden="true"></canvas>
+  <div class="cursor" aria-hidden="true"></div>
+
+  <!-- =========================================================
+       MENU
+       ========================================================= -->
+  <header class="menu">
+    <nav class="container" aria-label="Menu principal">
+      <a class="menu-logo" href="#inicio">iago@varginha:~$</a>
+      <ul>
+        <li><a href="#sobre">Quem é esse?</a></li>
+        <li><a href="#entregas">Entregas</a></li>
+        <li><a href="#manifesto">Manifesto</a></li>
+        <li><a href="#contato">Chama no e-mail</a></li>
+      </ul>
+      <span class="contador" aria-live="off">você está aqui há <span id="segundos">0</span> s</span>
+      <button class="botao botao-pequeno" id="botao-tema" type="button" aria-label="Alternar tema claro e escuro">modo claro</button>
+    </nav>
+  </header>
+
+  <main>
+    <!-- =========================================================
+         TOPO: interruptor + cartão de visita
+         ========================================================= -->
+    <section class="hero" id="inicio">
+      <div class="hero-conteudo">
+        <article class="cartao">
+          <figure class="polaroid" style="margin:0">
+            <!-- TROQUE este SVG por <img src="avatar.png" alt="Foto de Iago"> -->
+            <svg viewBox="0 0 100 100" role="img" aria-label="Avatar provisório com as iniciais IT">
+              <rect width="100" height="100" fill="#0D0F1A"/>
+              <text x="50" y="62" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="34" font-weight="800" fill="#00E5FF">IT</text>
+            </svg>
+            <figcaption>eu, versão 1º ano</figcaption>
+            <svg class="tux-sentado" viewBox="0 0 60 70" role="img" aria-label="Tux, o pinguim do Linux">
+              <use href="#desenho-tux"/>
+            </svg>
+          </figure>
+
+          <div>
+            <h1>
+              <button class="nome neon-pisca" id="nome" type="button" title="Clique aqui">Iago Teixeira Pereira</button>
+            </h1>
+            <p class="frase">Software e Hardware</p>
+            <p class="local">15 anos, Varginha (MG). 1º ano do Ensino Médio Ômega + Técnico em Informática para Internet (SESI/SENAI).</p>
+            <ul class="tags" aria-label="Três coisas que me definem">
+              <li>Eletrônica</li>
+              <li>Informática</li>
+              <li>Games</li>
+            </ul>
+            <div class="acoes">
+              <a class="botao" href="https://github.com/iagoot23" target="_blank" rel="noopener">GitHub</a>
+              <a class="botao rosa" href="mailto:contato@iteixeira.dev">Mandar e-mail</a>
+            </div>
+          </div>
+        </article>
+
+        <!-- Lado do cartão: chamada em neon + interruptor -->
+        <div class="lado-interruptor">
+          <p class="chamada-neon" id="chamada">Aperte o<br>interruptor</p>
+          <button class="interruptor" id="interruptor" type="button">
+            <span class="espelho"><span class="tecla"></span></span>
+            <span id="interruptor-texto">Acender a luz</span>
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- =========================================================
+         SOBRE MIM
+         ========================================================= -->
+    <section id="sobre">
+      <div class="container revelar">
+        <h2 class="titulo-secao"><span class="prompt">&gt;</span> Sobre mim (versão sem bug)</h2>
+        <div class="painel">
+          <p>Tenho 15 anos, moro em Varginha e estou no 1º ano do Ensino Médio Ômega, no SESI/SENAI, fazendo junto o Técnico em Informática para Internet. Ainda estou descobrindo muita coisa, mas já sei que gosto de entender como as coisas funcionam por dentro: o hardware que liga e o software que faz ele funcionar.</p>
+          <p>Eletrônica, informática e games são o que mais ocupa a minha cabeça (e o meu tempo livre). Meu objetivo é virar desenvolvedor full-stack, e este portfólio é onde eu vou registrar cada passo até lá. Se você reparou num pinguim por aí, é o Tux: o Linux tem lugar garantido nesta página.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- =========================================================
+         ENTREGAS: letreiro neon + carrossel + controle remoto
+         Os cards são criados pelo JavaScript a partir da lista "entregas".
+         ========================================================= -->
+    <section id="entregas">
+      <div class="container revelar">
+        <div class="letreiro-suporte" aria-hidden="true"><span></span><span></span></div>
+        <div class="letreiro">
+          <h2 class="letreiro-titulo neon-pisca">ENTREGAS</h2>
+          <p class="letreiro-sub">O letreiro gira sozinho. Com pressa? Use o controle.</p>
+          <ul class="trilho" id="trilho" aria-label="Lista de entregas" tabindex="0"></ul>
+        </div>
+
+        <div class="controle" aria-label="Controle do carrossel">
+          <span class="led" id="led"></span>
+          <div class="controle-botoes">
+            <button type="button" id="anterior" aria-label="Entrega anterior">&lt;</button>
+            <button type="button" id="proxima" aria-label="Próxima entrega">&gt;</button>
+          </div>
+          <small>controle oficial</small>
+        </div>
+      </div>
+    </section>
+
+    <!-- =========================================================
+         MANIFESTO (recolhido no começo)
+         ========================================================= -->
+    <section id="manifesto">
+      <div class="container revelar">
+        <h2 class="titulo-secao"><span class="prompt">&gt;</span> Manifesto (textão autorizado)</h2>
+        <div class="crt">
+          <div class="crt-texto" id="manifesto-texto">
+            <p>C:\IAGO\MANIFESTO.TXT</p>
+            <p>[MANIFESTO AQUI]</p>
+            <p>[Cole aqui o seu texto de 400 a 600 palavras. Cada parágrafo vai dentro de um &lt;p&gt;.]</p>
+          </div>
+          <button class="botao" id="botao-manifesto" type="button" aria-expanded="false" aria-controls="manifesto-texto">Ler manifesto completo</button>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- =========================================================
+       RODAPÉ
+       ========================================================= -->
+  <footer id="contato">
+    <div class="container">
+      <p>Fala comigo: <a href="mailto:contato@iteixeira.dev">contato@iteixeira.dev</a></p>
+      <p>Código no <a href="https://github.com/iagoot23" target="_blank" rel="noopener">github.com/iagoot23</a></p>
+      <p>Compilado em Varginha. Testado com a luz acesa.</p>
+    </div>
+  </footer>
+
+  <!-- Tux do easter egg (aparece ao digitar T, U, X) -->
+  <div id="tux-surpresa" aria-live="polite">
+    <span class="balao">Oi! Aqui roda Linux.</span>
+    <svg viewBox="0 0 60 70" role="img" aria-label="Tux acenando">
+      <use href="#desenho-tux"/>
+      <ellipse class="asa-acenando" cx="12" cy="44" rx="5" ry="12" fill="#111" transform="rotate(25 12 44)"/>
+    </svg>
+  </div>
+
+  <!-- Desenho do Tux, reaproveitado com <use> nos dois lugares -->
+  <svg width="0" height="0" style="position:absolute" aria-hidden="true">
+    <defs>
+      <g id="desenho-tux">
+        <ellipse cx="30" cy="42" rx="20" ry="24" fill="#111"/>          <!-- corpo -->
+        <ellipse cx="30" cy="47" rx="13" ry="17" fill="#F4F4F0"/>       <!-- barriga -->
+        <circle cx="30" cy="18" r="13" fill="#111"/>                     <!-- cabeça -->
+        <ellipse cx="25" cy="17" rx="4" ry="5" fill="#fff"/>             <!-- olho esq -->
+        <ellipse cx="35" cy="17" rx="4" ry="5" fill="#fff"/>             <!-- olho dir -->
+        <circle cx="26" cy="18" r="2" fill="#111"/>
+        <circle cx="34" cy="18" r="2" fill="#111"/>
+        <path d="M24 24 Q30 20 36 24 Q30 30 24 24Z" fill="#F5B700"/>     <!-- bico -->
+        <ellipse cx="48" cy="44" rx="5" ry="12" fill="#111" transform="rotate(-25 48 44)"/> <!-- asa -->
+        <ellipse cx="21" cy="66" rx="8" ry="4" fill="#F5B700"/>          <!-- pé esq -->
+        <ellipse cx="39" cy="66" rx="8" ry="4" fill="#F5B700"/>          <!-- pé dir -->
+      </g>
+    </defs>
+  </svg>
+
+  <script>
+    /* =========================================================
+       0. CONFIGURAÇÕES GERAIS
+       ========================================================= */
+    // true se a pessoa pediu para reduzir movimento no sistema
+    const semMovimento = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+    /* =========================================================
+       1. LISTA DE ENTREGAS
+       Para atualizar um card, mude aqui:
+       status: "concluida" ou "em-breve"
+       ========================================================= */
+    const repo = "https://github.com/iagoot23/portfolio-mundo-trabalho/tree/main/";
+    const entregas = [
+      { numero: 2, titulo: "Capa do Meu Álbum",        data: "[PREENCHER]", aprendi: "[PREENCHER]", pasta: "02-capa-do-album",     status: "concluida" }, // exemplo de card concluído
+      { numero: 3, titulo: "Dashboard Quem Sou Eu",     data: "[PREENCHER]", aprendi: "[PREENCHER]", pasta: "03-dashboard",         status: "em-breve" },
+      { numero: 4, titulo: "Árvore das Profissões 2.0", data: "[PREENCHER]", aprendi: "[PREENCHER]", pasta: "04-arvore-profissoes", status: "em-breve" },
+      { numero: 5, titulo: "Âncoras de Carreira",       data: "[PREENCHER]", aprendi: "[PREENCHER]", pasta: "05-ancoras-manifesto", status: "em-breve" },
+      { numero: 5, titulo: "Manifesto",                 data: "[PREENCHER]", aprendi: "[PREENCHER]", pasta: "05-ancoras-manifesto", status: "em-breve" }
+    ];
+
+    // Monta o HTML de cada card e coloca dentro do trilho
+    const trilho = document.getElementById("trilho");
+    trilho.innerHTML = entregas.map(function (e) {
+      const concluida = e.status === "concluida";
+      const link = concluida
+        ? `<a class="botao botao-pequeno" href="${repo + e.pasta}" target="_blank" rel="noopener">Abrir pasta</a>`
+        : "";
+      return `
+        <li class="card ${e.status}">
+          <span class="card-numero">Entrega ${e.numero}</span>
+          <h3>${e.titulo}</h3>
+          <span class="card-data">${e.data}</span>
+          <p>O que aprendi: ${e.aprendi}</p>
+          <div class="rodape-card">
+            <span class="selo ${e.status}">${concluida ? "Concluída" : "Em breve"}</span>
+            ${link}
+          </div>
+        </li>`;
+    }).join("");
+
+    /* =========================================================
+       2. CARROSSEL: anda sozinho e responde ao controle remoto
+       ========================================================= */
+    const led = document.getElementById("led");
+
+    function piscarLed() {
+      led.classList.add("ligado");
+      setTimeout(function () { led.classList.remove("ligado"); }, 180);
+    }
+
+    // Anda um card para frente (+1) ou para trás (-1)
+    function mover(direcao) {
+      const card = trilho.querySelector(".card");
+      const passo = card.offsetWidth + 16; // largura do card + espaço entre eles
+      const fim = trilho.scrollWidth - trilho.clientWidth;
+
+      if (direcao > 0 && trilho.scrollLeft >= fim - 5) {
+        trilho.scrollTo({ left: 0 });            // chegou no fim: volta ao começo
+      } else if (direcao < 0 && trilho.scrollLeft <= 5) {
+        trilho.scrollTo({ left: fim });          // está no começo: vai pro fim
+      } else {
+        trilho.scrollBy({ left: passo * direcao });
+      }
+      piscarLed();
+    }
+
+    document.getElementById("proxima").addEventListener("click", function () { mover(1); reiniciarAutomatico(); });
+    document.getElementById("anterior").addEventListener("click", function () { mover(-1); reiniciarAutomatico(); });
+
+    // Movimento automático a cada 4 segundos (pausa com o mouse em cima)
+    let timer = null;
+    let pausado = false;
+    function reiniciarAutomatico() {
+      if (semMovimento) return;
+      clearInterval(timer);
+      timer = setInterval(function () { if (!pausado) mover(1); }, 4000);
+    }
+    trilho.addEventListener("mouseenter", function () { pausado = true; });
+    trilho.addEventListener("mouseleave", function () { pausado = false; });
+    trilho.addEventListener("focusin",    function () { pausado = true; });
+    trilho.addEventListener("focusout",   function () { pausado = false; });
+    reiniciarAutomatico();
+
+    /* =========================================================
+       3. INTERRUPTOR DE LUZ
+       ========================================================= */
+    const interruptor = document.getElementById("interruptor");
+    const ladoInterruptor = document.querySelector(".lado-interruptor");
+
+    // O interruptor só serve para "entrar" na página:
+    // acende a luz, mostra a mensagem por um instante e some.
+    interruptor.addEventListener("click", function () {
+      document.body.classList.add("luz-acesa");
+      interruptor.disabled = true;
+      document.getElementById("chamada").innerHTML = "Agora sim,<br>dá pra ver";
+
+      const espera = semMovimento ? 0 : 700;   // tempo lendo a mensagem
+      const saida  = semMovimento ? 0 : 600;   // duração do sumiço (igual ao CSS)
+
+      setTimeout(function () {
+        ladoInterruptor.classList.add("sumindo");          // começa a desaparecer
+        setTimeout(function () {
+          ladoInterruptor.hidden = true;                   // sai do layout: o cartão centraliza
+          document.getElementById("nome").focus({ preventScroll: true }); // teclado não fica "perdido"
+        }, saida);
+      }, espera);
+    });
+
+    /* =========================================================
+       4. TEMA CLARO / ESCURO
+       Começa seguindo o sistema. O botão troca na hora.
+       ========================================================= */
+    const botaoTema = document.getElementById("botao-tema");
+    function aplicarTema(tema) {
+      document.documentElement.setAttribute("data-theme", tema);
+      botaoTema.textContent = tema === "claro" ? "modo escuro" : "modo claro";
+      desenharCidade(); // janelas mudam de cor com o tema
+    }
+    botaoTema.addEventListener("click", function () {
+      const atual = document.documentElement.getAttribute("data-theme");
+      aplicarTema(atual === "claro" ? "escuro" : "claro");
+    });
+
+    /* =========================================================
+       5. CIDADE DE FUNDO (prédios e janelas em SVG)
+       ========================================================= */
+    function desenharCidade() {
+      const svg = document.getElementById("cidade");
+      const claro = document.documentElement.getAttribute("data-theme") === "claro";
+      const coresJanela = claro ? ["#9BA3C0"] : ["#00E5FF", "#FF2E88", "#7C3AED", "#2A2F4A"];
+      let x = 0;
+      let html = "";
+      let semente = 7; // números "aleatórios" fixos: a cidade fica sempre igual
+
+      function aleatorio() {
+        semente = (semente * 9301 + 49297) % 233280;
+        return semente / 233280;
+      }
+
+      while (x < 1200) {
+        const largura = 50 + aleatorio() * 70;
+        const altura = 120 + aleatorio() * 260;
+        const topo = 400 - altura;
+        html += `<rect class="predio" x="${x}" y="${topo}" width="${largura}" height="${altura}"/>`;
+
+        // janelas em grade
+        for (let jy = topo + 12; jy < 390; jy += 18) {
+          for (let jx = x + 8; jx < x + largura - 10; jx += 14) {
+            if (aleatorio() > 0.72) {
+              const cor = coresJanela[Math.floor(aleatorio() * coresJanela.length)];
+              html += `<rect x="${jx}" y="${jy}" width="6" height="8" fill="${cor}" opacity="0.6"/>`;
+            }
+          }
+        }
+        x += largura + 4;
+      }
+      svg.innerHTML = html;
+    }
+
+    const temaInicial = window.matchMedia("(prefers-color-scheme: light)").matches ? "claro" : "escuro";
+    aplicarTema(temaInicial);
+
+    /* =========================================================
+       6. CHUVA (canvas)
+       ========================================================= */
+    const chuva = document.getElementById("chuva");
+    const ctxChuva = chuva.getContext("2d");
+    let gotas = [];
+
+    function ajustarTela() {
+      chuva.width = confete.width = window.innerWidth;
+      chuva.height = confete.height = window.innerHeight;
+      // quantidade de gotas proporcional ao tamanho da tela
+      gotas = Array.from({ length: Math.floor(window.innerWidth / 6) }, function () {
+        return {
+          x: Math.random() * chuva.width,
+          y: Math.random() * chuva.height,
+          tamanho: 10 + Math.random() * 14,
+          velocidade: 6 + Math.random() * 8
+        };
+      });
+    }
+
+    function animarChuva() {
+      ctxChuva.clearRect(0, 0, chuva.width, chuva.height);
+      const claro = document.documentElement.getAttribute("data-theme") === "claro";
+      ctxChuva.strokeStyle = claro ? "rgba(40, 60, 110, 0.25)" : "rgba(0, 229, 255, 0.22)";
+      ctxChuva.lineWidth = 1;
+      ctxChuva.beginPath();
+      gotas.forEach(function (g) {
+        ctxChuva.moveTo(g.x, g.y);
+        ctxChuva.lineTo(g.x - 2, g.y + g.tamanho);  // gota levemente inclinada
+        g.y += g.velocidade;
+        if (g.y > chuva.height) { g.y = -g.tamanho; g.x = Math.random() * chuva.width; }
+      });
+      ctxChuva.stroke();
+      requestAnimationFrame(animarChuva);
+    }
+
+    const confete = document.getElementById("confete");
+    ajustarTela();
+    window.addEventListener("resize", ajustarTela);
+    if (!semMovimento) animarChuva();
+
+    /* =========================================================
+       7. CONFETE ao clicar no nome
+       ========================================================= */
+    const ctxConfete = confete.getContext("2d");
+    let pedacos = [];
+    let confeteRodando = false;
+
+    document.getElementById("nome").addEventListener("click", function (evento) {
+      if (semMovimento) return;
+      const cores = ["#00E5FF", "#7C3AED", "#FF2E88", "#E6E8F2"];
+      const origemX = evento.clientX || window.innerWidth / 2;
+      const origemY = evento.clientY || window.innerHeight / 2;
+      for (let i = 0; i < 90; i++) {
+        pedacos.push({
+          x: origemX, y: origemY,
+          vx: (Math.random() - 0.5) * 12,
+          vy: -Math.random() * 11 - 2,
+          cor: cores[i % cores.length],
+          vida: 60 + Math.random() * 30
+        });
+      }
+      if (!confeteRodando) { confeteRodando = true; animarConfete(); }
+    });
+
+    function animarConfete() {
+      ctxConfete.clearRect(0, 0, confete.width, confete.height);
+      pedacos.forEach(function (p) {
+        p.vy += 0.35;        // gravidade
+        p.x += p.vx;
+        p.y += p.vy;
+        p.vida--;
+        ctxConfete.fillStyle = p.cor;
+        ctxConfete.fillRect(p.x, p.y, 6, 10);
+      });
+      pedacos = pedacos.filter(function (p) { return p.vida > 0; });
+      if (pedacos.length) requestAnimationFrame(animarConfete);
+      else { confeteRodando = false; ctxConfete.clearRect(0, 0, confete.width, confete.height); }
+    }
+
+    /* =========================================================
+       8. CURSOR PERSONALIZADO (só com mouse)
+       ========================================================= */
+    const cursor = document.querySelector(".cursor");
+    if (window.matchMedia("(pointer: fine)").matches) {
+      document.body.classList.add("cursor-ativo");
+      document.addEventListener("mousemove", function (e) {
+        cursor.style.left = e.clientX + "px";
+        cursor.style.top = e.clientY + "px";
+        // cursor cresce quando está em cima de algo clicável
+        cursor.classList.toggle("sobre-link", !!e.target.closest("a, button"));
+      });
+    }
+
+    /* =========================================================
+       9. CONTADOR DE TEMPO NA PÁGINA
+       ========================================================= */
+    let segundos = 0;
+    const spanSegundos = document.getElementById("segundos");
+    setInterval(function () { segundos++; spanSegundos.textContent = segundos; }, 1000);
+
+    /* =========================================================
+       10. REVELAR AO ROLAR (borrado -> nítido)
+       O IntersectionObserver avisa quando o bloco entra na tela.
+       ========================================================= */
+    const observador = new IntersectionObserver(function (itens) {
+      itens.forEach(function (item) {
+        if (item.isIntersecting) {
+          item.target.classList.add("visivel");
+          observador.unobserve(item.target); // anima só uma vez
+        }
+      });
+    }, { threshold: 0.15 });
+    document.querySelectorAll(".revelar").forEach(function (el) { observador.observe(el); });
+
+    /* =========================================================
+       11. MANIFESTO: abrir e fechar
+       ========================================================= */
+    const botaoManifesto = document.getElementById("botao-manifesto");
+    const textoManifesto = document.getElementById("manifesto-texto");
+    botaoManifesto.addEventListener("click", function () {
+      const aberto = textoManifesto.classList.toggle("aberto");
+      botaoManifesto.textContent = aberto ? "Recolher textão" : "Ler manifesto completo";
+      botaoManifesto.setAttribute("aria-expanded", aberto);
+    });
+
+    /* =========================================================
+       12. EASTER EGG: T, U, X com no máximo 1500 ms entre as teclas
+       ========================================================= */
+    const sequencia = ["t", "u", "x"];
+    let posicao = 0;          // quantas teclas certas já foram
+    let ultimaTecla = 0;      // horário da última tecla certa
+    const tux = document.getElementById("tux-surpresa");
+
+    document.addEventListener("keydown", function (e) {
+      const agora = Date.now();
+      const tecla = e.key.toLowerCase();
+
+      // demorou demais? recomeça a contagem
+      if (posicao > 0 && agora - ultimaTecla > 1500) posicao = 0;
+
+      if (tecla === sequencia[posicao]) {
+        posicao++;
+        ultimaTecla = agora;
+        if (posicao === sequencia.length) {
+          posicao = 0;
+          mostrarTux();
+        }
+      } else {
+        // errou: se a tecla for "t", já conta como começo de nova tentativa
+        posicao = tecla === "t" ? 1 : 0;
+        ultimaTecla = agora;
+      }
+    });
+
+    function mostrarTux() {
+      tux.classList.add("aparece");                       // entra
+      setTimeout(function () { tux.classList.remove("aparece"); }, 2600); // e vai embora
+    }
+  </script>
+</body>
+</html>

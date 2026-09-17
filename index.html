@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Mundo do Trabalho — Etapa 1: Autoconhecimento</title>
 <meta name="description" content="Apresentação da Etapa 1 do módulo Mundo do Trabalho, adaptada para a Geração Alpha.">
-<link rel="stylesheet" href="assets/style.css?v=3">
+<link rel="stylesheet" href="assets/style.css?v=4">
 </head>
 <body>
 
@@ -359,33 +359,434 @@
 </section>
 
 <section class="slide" data-block="1" data-blockname="MUNDO DO TRABALHO" data-title="★ O prompt da landing page">
-  <div class="slide__body stack">
+  <div class="slide__body stack" data-tabs>
     <span class="marker marker--digital">BORA LÁ!</span>
-    <h2 class="title">O prompt inicial da sua landing page</h2>
-    <div class="code" id="prompt-landing">Crie uma landing page em um único arquivo index.html (HTML e CSS juntos, sem
-bibliotecas externas) que me apresente. Sobre mim:
+    <h2 class="title">O prompt da sua landing page</h2>
+    <p class="lead">Não é um texto pronto, é um <strong>cardápio</strong>. Na parte 1 você preenche, na parte 3 você apaga as opções que não quiser e deixa só uma em cada item. As partes 2 e 4 ficam como estão.</p>
+    <div class="tabs">
+      <button class="tab is-active">1 · Quem eu sou</button>
+      <button class="tab">2 · Estrutura</button>
+      <button class="tab">3 · Estilo</button>
+      <button class="tab">4 · Regras</button>
+    </div>
+    <div class="tabpane is-active"><div class="code">Crie uma landing page de portfólio pessoal em um ÚNICO arquivo index.html
+(HTML, CSS e JavaScript juntos).
 
-- Nome: [SEU NOME]
+════════════════════════════════════════
+PARTE 1 — QUEM EU SOU (preencha tudo com as SUAS palavras)
+════════════════════════════════════════
+- Nome (como quero aparecer): [PREENCHA]
+- Apelido ou nome artístico (opcional): [PREENCHA]
 - Idade e cidade: [PREENCHA]
 - Curso técnico: [PREENCHA]
+- Frase curta que me resume (máx. 12 palavras): [PREENCHA]
 - Três coisas que me definem: [PREENCHA]
 - O que eu quero fazer no futuro: [PREENCHA]
+- Um hobby ou interesse que pouca gente sabe: [PREENCHA]
+- Um detalhe que só existe na MINHA página (ex.: meu time, meu jogo favorito,
+  uma música, um objeto, meu bairro): [PREENCHA]
+- Texto do "Sobre mim" (escreva você, 2 parágrafos curtos): [PREENCHA]
+- Meu GitHub: [PREENCHA]   Contato (e-mail ou Instagram): [PREENCHA]</div></div>
+    <div class="tabpane"><div class="code">════════════════════════════════════════
+PARTE 2 — ESTRUTURA DA PÁGINA
+════════════════════════════════════════
+1. Topo (hero) com meu nome grande, minha frase e uma foto ou avatar
+2. Seção "Sobre mim" com os 2 parágrafos acima
+3. Seção "Minhas entregas" com 5 cards: Capa do Meu Álbum, Dashboard Quem Sou Eu,
+   Árvore das Profissões 2.0, Âncoras de Carreira e Manifesto.
+   Cada card tem: número da entrega, título, data, uma linha sobre o que aprendi,
+   link para a pasta no GitHub e um selo de status ("Concluída" ou "Em breve").
+   Cards "Em breve" ficam com aparência apagada e sem link.
+4. Seção "Manifesto" com espaço para um texto de 400 a 600 palavras
+   (por enquanto use [MANIFESTO AQUI])
+5. Rodapé com contato e link do GitHub</div></div>
+    <div class="tabpane"><div class="code">════════════════════════════════════════
+PARTE 3 — ESTILO (APAGUE as opções que não quiser e deixe SÓ UMA em cada item)
+════════════════════════════════════════
 
-A página precisa ter:
-1. Um topo com meu nome grande, uma frase curta sobre mim e uma foto ou avatar
-2. Uma seção "Sobre mim" com 2 parágrafos
-3. Uma seção "Minhas entregas" com 5 cards, um para cada atividade do módulo:
-   Capa do Meu Álbum, Dashboard Quem Sou Eu, Árvore das Profissões,
-   Âncoras de Carreira, e o Manifesto. Cada card tem título, data,
-   uma linha sobre o que aprendi e um link para a pasta da entrega
-4. Um rodapé com meu contato e o link do meu GitHub
+▸ CLIMA GERAL DA PÁGINA
+- Tecnológico e moderno
+- Aconchegante e acolhedor
+- Divertido e colorido
+- Minimalista e elegante
+- Gamer / futurista
+- Artístico e ousado
+- Retrô (anos 80/90)
 
-Estilo: [DESCREVA AS CORES E O CLIMA QUE VOCÊ QUER]
-Precisa funcionar bem no celular e ter bom contraste para leitura.</div>
+▸ PALETA DE CORES (fundo / texto / primária / secundária / destaque)
+- Café com Leite (terroso, calmo): #F5EFE6 / #2B211A / #8B5E3C / #C9A27E / #D9481C
+- Neon Noturno (escuro, gamer): #0D0F1A / #E6E8F2 / #00E5FF / #7C3AED / #FF2E88
+- Mata Mineira (natureza, tranquilo): #F1F4EE / #1E2A20 / #2F6B3F / #A7C4A0 / #E0A526
+- Oficina (industrial, técnico): #1C1C1C / #EDEDED / #F5B700 / #5A5A5A / #FF5A1F
+- Papel e Caneta (limpo, sério): #FFFFFF / #111111 / #1D3FBB / #E8E8E8 / #E63946
+- Pôr do Sol Retrô (quente, anos 80): #2A1B3D / #FFF4E0 / #FF7A59 / #FFC857 / #44D9E8
+- Algodão Doce (pastel, leve): #FFF8FB / #2E2A3A / #B983FF / #FFD6E8 / #3BB273
+- Minha própria: fundo [ ] texto [ ] primária [ ] secundária [ ] destaque [ ]
+
+▸ FONTES (títulos + texto, do Google Fonts)
+- Space Grotesk + Inter (tecnológico, limpo)
+- Playfair Display + Source Sans 3 (elegante, estilo revista)
+- Bebas Neue + Roboto (impacto, estilo pôster)
+- Silkscreen + IBM Plex Sans (pixel art nos títulos, jogo antigo)
+- JetBrains Mono + IBM Plex Sans (cara de programador/terminal)
+- Fraunces + Nunito (arredondado, acolhedor)
+- Syne + DM Sans (artístico, diferente)
+- Caveat + Nunito (títulos que parecem escritos à mão)
+
+▸ LAYOUT DO TOPO
+- Centralizado: foto em cima, nome e frase embaixo
+- Dividido: texto à esquerda, foto à direita
+- Tela cheia: nome GIGANTE ocupando a tela, foto pequena
+- Estilo cartão de visita: tudo dentro de um cartão no meio da tela
+
+▸ FORMATO DA FOTO/AVATAR
+- Círculo
+- Forma orgânica (tipo gota/bolha)
+- Hexágono
+- Polaroid levemente inclinada
+- Quadrado com sombra dura deslocada
+
+▸ ELEMENTO INTERATIVO PRINCIPAL (fica no topo)
+- Efeito máquina de escrever que alterna palavras sobre mim
+- Luz que segue o mouse (no celular, segue o toque)
+- Partículas ligadas por linhas que reagem ao mouse (constelação)
+- Terminal falso que "digita" comandos e mostra informações sobre mim
+- Foto que inclina em 3D quando passo o mouse
+- Nome que aparece "embaralhado" e vai se decifrando letra por letra
+- Interruptor de luz: a página começa escura e acende ao clicar
+- Disco de vinil girando atrás da minha foto (conecta com a Capa do Álbum)
+- Fundo com gradiente que se move devagar
+
+▸ FUNDO DA PÁGINA
+- Cor sólida
+- Papel quadriculado (linhas finas)
+- Pontilhado
+- Textura granulada (ruído leve)
+- Manchas de cor desfocadas
+- Trilhas de placa de circuito bem sutis
+
+▸ ESTILO DOS CARDS DAS ENTREGAS
+- Vidro fosco (transparente com desfoque)
+- Brutalista (borda grossa preta + sombra dura, sem desfoque)
+- Polaroid (moldura branca com legenda embaixo)
+- Capa de disco (o card é quadrado e um vinil "sai" dele no hover)
+- Vira-card (frente com título, verso com detalhes ao clicar)
+- Ingresso de show (bordas recortadas e picote)
+- Janela de terminal (barrinha com 3 bolinhas no topo)
+- Pasta de arquivo (com aba em cima)
+- Post-it colado com fita
+
+▸ DISPOSIÇÃO DOS CARDS
+- Grade (2 ou 3 por linha)
+- Linha do tempo vertical (um embaixo do outro, com linha ligando)
+- Carrossel horizontal (arrastar para o lado)
+- Mosaico (tamanhos diferentes, estilo painel)
+
+▸ EFEITO AO PASSAR O MOUSE NO CARD
+- Sobe um pouco e a sombra aumenta
+- Inclina em 3D
+- Borda colorida que gira em volta
+- Um brilho atravessa o card
+- Cores se invertem
+- Zoom leve na imagem
+
+▸ ANIMAÇÃO AO ROLAR A PÁGINA (como as seções aparecem)
+- Surgem de baixo para cima suavemente
+- Entram alternando pela esquerda e pela direita
+- Começam borradas e ficam nítidas
+- Cortina que se abre revelando o conteúdo
+- Aparecem em sequência, um card de cada vez
+- Nenhuma (tudo já aparece parado)
+
+▸ DIVISÓRIA ENTRE SEÇÕES
+- Linha fina
+- Onda
+- Corte diagonal
+- Zigue-zague
+- Nenhuma, só espaço
+
+▸ MENU DE NAVEGAÇÃO
+- Barra fixa no topo
+- Pílula flutuante embaixo da tela (estilo aplicativo)
+- Bolinhas na lateral indicando a seção atual
+- Menu hambúrguer que abre em tela cheia
+- Sem menu, só botão "voltar ao topo"
+
+▸ ESTILO DOS BOTÕES/LINKS
+- Pílula arredondada
+- Quadrado com sombra dura
+- Contorno que se preenche no hover
+- Texto com sublinhado animado
+
+▸ TEMA CLARO/ESCURO
+- Botão para alternar
+- Segue o tema do celular/computador
+- Só claro
+- Só escuro
+
+▸ SEÇÃO DO MANIFESTO
+- Coluna estreita estilo artigo, com a primeira letra gigante
+- Com uma frase de destaque em tamanho grande no meio
+- Recolhido com botão "Ler manifesto completo"
+- Fundo com a cor primária e texto invertido
+
+▸ DETALHE EXTRA (microinteração)
+- Barra de progresso de leitura no topo
+- Cursor personalizado
+- Confete ao clicar no meu nome
+- Easter egg secreto (sequência de teclas que muda algo na página)
+- Contador "você está aqui há X segundos"
+- Nenhum
+
+▸ TOM DOS TEXTOS DA INTERFACE (títulos de seção, botões)
+- Formal
+- Descontraído
+- Bem-humorado
+- Poético</div></div>
+    <div class="tabpane"><div class="code">════════════════════════════════════════
+PARTE 4 — REGRAS (NÃO APAGUE)
+════════════════════════════════════════
+- NÃO invente nada sobre mim: nada de números, depoimentos, prêmios,
+  barras de "90% em Python" ou habilidades que eu não listei.
+  Se faltar texto, escreva [PREENCHER] no lugar.
+- NÃO use frases prontas como "apaixonado por tecnologia",
+  "transformando ideias em realidade" ou "Olá, mundo!".
+  Use as minhas palavras da Parte 1.
+- Use EXATAMENTE a paleta e as fontes que escolhi. Declare as cores como
+  variáveis CSS no :root.
+- Nada de gradiente roxo/azul ou emojis espalhados, a não ser que eu tenha escolhido.
+- O "detalhe que só existe na minha página" precisa aparecer de forma visível.
+- Animações suaves (entre 0,3 s e 0,8 s) e desligadas para quem ativou
+  "reduzir movimento" (prefers-reduced-motion).
+- Contraste bom para leitura (mínimo WCAG AA).
+- Precisa funcionar bem no celular (teste mental em 360 px de largura).
+- HTML semântico (header, main, section, footer) e texto alternativo nas imagens.
+- Comente o código em português, explicando o que cada bloco faz,
+  porque eu preciso entender tudo o que vou publicar.
+- No fim da resposta, liste o que eu ainda preciso trocar
+  (foto, links, textos marcados com [PREENCHER]).</div></div>
     <div class="copyrow">
-      <button class="btn btn--digital" data-copy="prompt-landing">Copiar prompt</button>
+      <button class="btn btn--digital" data-copy="prompt-landing">Copiar prompt inteiro</button>
       <span class="copyrow__ok">Copiado</span>
-      <span class="tiny">Preencha os campos entre colchetes antes de enviar. Prompt genérico gera página genérica.</span>
+      <span class="tiny">Copia as quatro partes de uma vez. Prompt genérico gera página genérica.</span>
+    </div>
+    <div id="prompt-landing" hidden>Crie uma landing page de portfólio pessoal em um ÚNICO arquivo index.html
+(HTML, CSS e JavaScript juntos).
+
+════════════════════════════════════════
+PARTE 1 — QUEM EU SOU (preencha tudo com as SUAS palavras)
+════════════════════════════════════════
+- Nome (como quero aparecer): [PREENCHA]
+- Apelido ou nome artístico (opcional): [PREENCHA]
+- Idade e cidade: [PREENCHA]
+- Curso técnico: [PREENCHA]
+- Frase curta que me resume (máx. 12 palavras): [PREENCHA]
+- Três coisas que me definem: [PREENCHA]
+- O que eu quero fazer no futuro: [PREENCHA]
+- Um hobby ou interesse que pouca gente sabe: [PREENCHA]
+- Um detalhe que só existe na MINHA página (ex.: meu time, meu jogo favorito,
+  uma música, um objeto, meu bairro): [PREENCHA]
+- Texto do "Sobre mim" (escreva você, 2 parágrafos curtos): [PREENCHA]
+- Meu GitHub: [PREENCHA]   Contato (e-mail ou Instagram): [PREENCHA]
+
+════════════════════════════════════════
+PARTE 2 — ESTRUTURA DA PÁGINA
+════════════════════════════════════════
+1. Topo (hero) com meu nome grande, minha frase e uma foto ou avatar
+2. Seção "Sobre mim" com os 2 parágrafos acima
+3. Seção "Minhas entregas" com 5 cards: Capa do Meu Álbum, Dashboard Quem Sou Eu,
+   Árvore das Profissões 2.0, Âncoras de Carreira e Manifesto.
+   Cada card tem: número da entrega, título, data, uma linha sobre o que aprendi,
+   link para a pasta no GitHub e um selo de status ("Concluída" ou "Em breve").
+   Cards "Em breve" ficam com aparência apagada e sem link.
+4. Seção "Manifesto" com espaço para um texto de 400 a 600 palavras
+   (por enquanto use [MANIFESTO AQUI])
+5. Rodapé com contato e link do GitHub
+
+════════════════════════════════════════
+PARTE 3 — ESTILO (APAGUE as opções que não quiser e deixe SÓ UMA em cada item)
+════════════════════════════════════════
+
+▸ CLIMA GERAL DA PÁGINA
+- Tecnológico e moderno
+- Aconchegante e acolhedor
+- Divertido e colorido
+- Minimalista e elegante
+- Gamer / futurista
+- Artístico e ousado
+- Retrô (anos 80/90)
+
+▸ PALETA DE CORES (fundo / texto / primária / secundária / destaque)
+- Café com Leite (terroso, calmo): #F5EFE6 / #2B211A / #8B5E3C / #C9A27E / #D9481C
+- Neon Noturno (escuro, gamer): #0D0F1A / #E6E8F2 / #00E5FF / #7C3AED / #FF2E88
+- Mata Mineira (natureza, tranquilo): #F1F4EE / #1E2A20 / #2F6B3F / #A7C4A0 / #E0A526
+- Oficina (industrial, técnico): #1C1C1C / #EDEDED / #F5B700 / #5A5A5A / #FF5A1F
+- Papel e Caneta (limpo, sério): #FFFFFF / #111111 / #1D3FBB / #E8E8E8 / #E63946
+- Pôr do Sol Retrô (quente, anos 80): #2A1B3D / #FFF4E0 / #FF7A59 / #FFC857 / #44D9E8
+- Algodão Doce (pastel, leve): #FFF8FB / #2E2A3A / #B983FF / #FFD6E8 / #3BB273
+- Minha própria: fundo [ ] texto [ ] primária [ ] secundária [ ] destaque [ ]
+
+▸ FONTES (títulos + texto, do Google Fonts)
+- Space Grotesk + Inter (tecnológico, limpo)
+- Playfair Display + Source Sans 3 (elegante, estilo revista)
+- Bebas Neue + Roboto (impacto, estilo pôster)
+- Silkscreen + IBM Plex Sans (pixel art nos títulos, jogo antigo)
+- JetBrains Mono + IBM Plex Sans (cara de programador/terminal)
+- Fraunces + Nunito (arredondado, acolhedor)
+- Syne + DM Sans (artístico, diferente)
+- Caveat + Nunito (títulos que parecem escritos à mão)
+
+▸ LAYOUT DO TOPO
+- Centralizado: foto em cima, nome e frase embaixo
+- Dividido: texto à esquerda, foto à direita
+- Tela cheia: nome GIGANTE ocupando a tela, foto pequena
+- Estilo cartão de visita: tudo dentro de um cartão no meio da tela
+
+▸ FORMATO DA FOTO/AVATAR
+- Círculo
+- Forma orgânica (tipo gota/bolha)
+- Hexágono
+- Polaroid levemente inclinada
+- Quadrado com sombra dura deslocada
+
+▸ ELEMENTO INTERATIVO PRINCIPAL (fica no topo)
+- Efeito máquina de escrever que alterna palavras sobre mim
+- Luz que segue o mouse (no celular, segue o toque)
+- Partículas ligadas por linhas que reagem ao mouse (constelação)
+- Terminal falso que "digita" comandos e mostra informações sobre mim
+- Foto que inclina em 3D quando passo o mouse
+- Nome que aparece "embaralhado" e vai se decifrando letra por letra
+- Interruptor de luz: a página começa escura e acende ao clicar
+- Disco de vinil girando atrás da minha foto (conecta com a Capa do Álbum)
+- Fundo com gradiente que se move devagar
+
+▸ FUNDO DA PÁGINA
+- Cor sólida
+- Papel quadriculado (linhas finas)
+- Pontilhado
+- Textura granulada (ruído leve)
+- Manchas de cor desfocadas
+- Trilhas de placa de circuito bem sutis
+
+▸ ESTILO DOS CARDS DAS ENTREGAS
+- Vidro fosco (transparente com desfoque)
+- Brutalista (borda grossa preta + sombra dura, sem desfoque)
+- Polaroid (moldura branca com legenda embaixo)
+- Capa de disco (o card é quadrado e um vinil "sai" dele no hover)
+- Vira-card (frente com título, verso com detalhes ao clicar)
+- Ingresso de show (bordas recortadas e picote)
+- Janela de terminal (barrinha com 3 bolinhas no topo)
+- Pasta de arquivo (com aba em cima)
+- Post-it colado com fita
+
+▸ DISPOSIÇÃO DOS CARDS
+- Grade (2 ou 3 por linha)
+- Linha do tempo vertical (um embaixo do outro, com linha ligando)
+- Carrossel horizontal (arrastar para o lado)
+- Mosaico (tamanhos diferentes, estilo painel)
+
+▸ EFEITO AO PASSAR O MOUSE NO CARD
+- Sobe um pouco e a sombra aumenta
+- Inclina em 3D
+- Borda colorida que gira em volta
+- Um brilho atravessa o card
+- Cores se invertem
+- Zoom leve na imagem
+
+▸ ANIMAÇÃO AO ROLAR A PÁGINA (como as seções aparecem)
+- Surgem de baixo para cima suavemente
+- Entram alternando pela esquerda e pela direita
+- Começam borradas e ficam nítidas
+- Cortina que se abre revelando o conteúdo
+- Aparecem em sequência, um card de cada vez
+- Nenhuma (tudo já aparece parado)
+
+▸ DIVISÓRIA ENTRE SEÇÕES
+- Linha fina
+- Onda
+- Corte diagonal
+- Zigue-zague
+- Nenhuma, só espaço
+
+▸ MENU DE NAVEGAÇÃO
+- Barra fixa no topo
+- Pílula flutuante embaixo da tela (estilo aplicativo)
+- Bolinhas na lateral indicando a seção atual
+- Menu hambúrguer que abre em tela cheia
+- Sem menu, só botão "voltar ao topo"
+
+▸ ESTILO DOS BOTÕES/LINKS
+- Pílula arredondada
+- Quadrado com sombra dura
+- Contorno que se preenche no hover
+- Texto com sublinhado animado
+
+▸ TEMA CLARO/ESCURO
+- Botão para alternar
+- Segue o tema do celular/computador
+- Só claro
+- Só escuro
+
+▸ SEÇÃO DO MANIFESTO
+- Coluna estreita estilo artigo, com a primeira letra gigante
+- Com uma frase de destaque em tamanho grande no meio
+- Recolhido com botão "Ler manifesto completo"
+- Fundo com a cor primária e texto invertido
+
+▸ DETALHE EXTRA (microinteração)
+- Barra de progresso de leitura no topo
+- Cursor personalizado
+- Confete ao clicar no meu nome
+- Easter egg secreto (sequência de teclas que muda algo na página)
+- Contador "você está aqui há X segundos"
+- Nenhum
+
+▸ TOM DOS TEXTOS DA INTERFACE (títulos de seção, botões)
+- Formal
+- Descontraído
+- Bem-humorado
+- Poético
+
+════════════════════════════════════════
+PARTE 4 — REGRAS (NÃO APAGUE)
+════════════════════════════════════════
+- NÃO invente nada sobre mim: nada de números, depoimentos, prêmios,
+  barras de "90% em Python" ou habilidades que eu não listei.
+  Se faltar texto, escreva [PREENCHER] no lugar.
+- NÃO use frases prontas como "apaixonado por tecnologia",
+  "transformando ideias em realidade" ou "Olá, mundo!".
+  Use as minhas palavras da Parte 1.
+- Use EXATAMENTE a paleta e as fontes que escolhi. Declare as cores como
+  variáveis CSS no :root.
+- Nada de gradiente roxo/azul ou emojis espalhados, a não ser que eu tenha escolhido.
+- O "detalhe que só existe na minha página" precisa aparecer de forma visível.
+- Animações suaves (entre 0,3 s e 0,8 s) e desligadas para quem ativou
+  "reduzir movimento" (prefers-reduced-motion).
+- Contraste bom para leitura (mínimo WCAG AA).
+- Precisa funcionar bem no celular (teste mental em 360 px de largura).
+- HTML semântico (header, main, section, footer) e texto alternativo nas imagens.
+- Comente o código em português, explicando o que cada bloco faz,
+  porque eu preciso entender tudo o que vou publicar.
+- No fim da resposta, liste o que eu ainda preciso trocar
+  (foto, links, textos marcados com [PREENCHER]).</div>
+  </div>
+</section>
+
+<section class="slide" data-block="1" data-blockname="MUNDO DO TRABALHO" data-title="★ O mesmo prompt, duas IAs">
+  <div class="slide__body stack">
+    <h2 class="title">O mesmo prompt, duas IAs</h2>
+    <p class="lead">Um estudante preencheu o cardápio <strong>uma vez só</strong> e mandou o texto idêntico para duas IAs. As duas abrem com a luz apagada: <strong>clique no interruptor dentro da prévia</strong>.</p>
+    <div class="grid grid-2">
+      <div class="preview">
+        <p class="panel__head">Saída A</p>
+        <iframe class="preview__frame" src="exemplos/portfolio-claude.html" title="Página de exemplo gerada pela primeira IA" loading="lazy"></iframe>
+        <a class="btn btn--digital" href="exemplos/portfolio-claude.html" target="_blank" rel="noopener">Abrir em tela cheia</a>
+      </div>
+      <div class="preview">
+        <p class="panel__head">Saída B</p>
+        <iframe class="preview__frame" src="exemplos/portfolio-gemini.html" title="Página de exemplo gerada pela segunda IA" loading="lazy"></iframe>
+        <a class="btn btn--digital" href="exemplos/portfolio-gemini.html" target="_blank" rel="noopener">Abrir em tela cheia</a>
+      </div>
     </div>
   </div>
 </section>
@@ -1577,6 +1978,6 @@ Precisa funcionar bem no celular e ter bom contraste para leitura.</div>
   </div>
 </div>
 
-<script src="assets/app.js?v=3"></script>
+<script src="assets/app.js?v=4"></script>
 </body>
 </html>

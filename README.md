@@ -4,7 +4,7 @@ Apresentação web das páginas 19 a 55 do *Livro do Estudante* (SENAI/DN, 2020)
 adaptada para a **Geração Alpha** e reorganizada em torno de um portfólio digital
 no GitHub.
 
-**75 slides, 3 blocos, 5 entregas avaliadas, 100 pontos.**
+**76 slides, 3 blocos, 5 entregas avaliadas, 100 pontos.**
 
 ## Como abrir
 
@@ -21,7 +21,7 @@ Para projetar: abra e pressione **F** (tela cheia).
 | <kbd>→</kbd> / <kbd>Espaço</kbd> | Avança revelando item por item |
 | <kbd>←</kbd> | Volta |
 | <kbd>↓</kbd> / <kbd>↑</kbd> | Pula o slide inteiro, sem revelar |
-| <kbd>O</kbd> | Grade com os 75 slides, clicável |
+| <kbd>O</kbd> | Grade com os 76 slides, clicável |
 | <kbd>F</kbd> | Tela cheia |
 | <kbd>T</kbd> | Alterna tema claro e escuro |
 | <kbd>Home</kbd> / <kbd>End</kbd> | Primeiro / último slide |
@@ -35,17 +35,37 @@ fechar e reabrir sem perder o lugar, ou mandar um slide específico para alguém
 
 | Slide | Interação |
 |---|---|
-| 5, 11, 31 | Cartões que viram, revelando a definição |
-| 19, 44 | Botão "copiar" — leva o prompt pronto para a área de transferência |
-| 30 | Quiz mito ou real, com explicação após a resposta |
-| 32 | Cronômetro de 8 minutos para o Bingo de Autógrafos |
-| 40, 71, 72, 73 | Abas para navegar quadros e rubricas sem tabelão ilegível |
-| 49 | Carrossel com as 11 perguntas de reflexão |
-| 54 | Curtigrama — clique em cada quadrante |
-| 55 | Quadro de adjetivos funcional: escolha 5 de 28, com trava e contador |
-| 74 | Checklist da entrega final, com barra de progresso |
+| 5, 11, 32 | Cartões que viram, revelando a definição |
+| 19, 45 | Botão "copiar" — leva o prompt pronto para a área de transferência |
+| 19, 41, 72, 73, 74 | Abas para navegar quadros e rubricas sem tabelão ilegível |
+| 20 | As duas páginas de exemplo vivas, em iframe rolável |
+| 31 | Quiz mito ou real, com explicação após a resposta |
+| 33 | Cronômetro de 8 minutos para o Bingo de Autógrafos |
+| 50 | Carrossel com as 11 perguntas de reflexão |
+| 55 | Curtigrama — clique em cada quadrante |
+| 56 | Quadro de adjetivos funcional: escolha 5 de 28, com trava e contador |
+| 75 | Checklist da entrega final, com barra de progresso |
 
-As escolhas dos slides 55 e 74 ficam salvas no navegador daquele computador.
+As escolhas dos slides 56 e 75 ficam salvas no navegador daquele computador.
+
+## O prompt e os exemplos
+
+O slide 19 traz o prompt da landing page inteiro, dividido em quatro abas. Ele é
+um **cardápio**: na parte 1 o estudante preenche, na parte 3 apaga as opções que
+não quiser e deixa uma de cada item (paleta, fontes, layout do topo, formato da
+foto, elemento interativo, estilo dos cards e mais dez decisões), e nas partes 2
+e 4 não mexe. O botão copia as quatro partes de uma vez.
+
+O slide 20 mostra o resultado: o mesmo cardápio preenchido uma única vez e
+enviado para duas IAs diferentes, lado a lado em iframe rolável. As duas páginas
+estão em `exemplos/` e abrem sozinhas, sem servidor.
+
+As páginas falam por si, então o slide não traz legenda nenhuma — a comparação
+é da turma. Os arquivos estão como as IAs os devolveram, de propósito: a saída B
+puxa uma biblioteca de confete de um CDN e aponta a foto para um site de imagem
+genérica, que numa sala sem internet vira um retângulo quebrado. A única
+alteração foi corrigir, na saída A, um `z-index` que fazia o cartão do topo
+passar por cima do menu fixo ao rolar.
 
 ## As cinco entregas
 
@@ -102,9 +122,10 @@ capacidades socioemocionais.
 ## Arquivos
 
 ```
-index.html           os 75 slides
+index.html           os 76 slides
 assets/style.css     sistema visual
 assets/app.js        navegação e widgets
+exemplos/            as duas landing pages de exemplo do slide 20
 livro-estudante.pdf  fonte original, intocado
 ```
 

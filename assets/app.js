@@ -222,7 +222,7 @@
 
   function wireClickAdvance() {
     $('.deck').addEventListener('click', function (e) {
-      if (e.target.closest('button, a, input, .code, .carousel, .adjgrid, .quiz, .checks, .curti')) return;
+      if (e.target.closest('button, a, input, .code, .preview, .carousel, .adjgrid, .quiz, .checks, .curti')) return;
       next();
     });
   }

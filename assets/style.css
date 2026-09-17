@@ -469,6 +469,19 @@ em{font-style:italic}
 .code .c-key{color:var(--digital)}
 .code .c-dim{color:var(--zinc)}
 
+/* --- Previa de pagina de exemplo ---------------------------------------- */
+.preview{display:flex;flex-direction:column;gap:.7em;min-width:0}
+.preview__frame{
+  display:block;
+  width:100%;
+  height:clamp(190px,36vh,420px);
+  border:1px solid var(--edge-soft);
+  border-left:4px solid var(--digital);
+  background:var(--panel-2);
+  color-scheme:light dark;
+}
+.preview .btn{align-self:start}
+
 .copyrow{display:flex;align-items:center;gap:.8em;flex-wrap:wrap}
 .copyrow__ok{color:var(--voce);font-weight:700;font-size:.92rem;opacity:0;transition:opacity .2s}
 .copyrow__ok.is-on{opacity:1}
@@ -783,6 +796,7 @@ kbd{
   .list{gap:clamp(6px,.9vh,12px)}
   .list li{font-size:clamp(.94rem,1.24vw,1.3rem);line-height:1.34}
   .code{max-height:44vh;font-size:clamp(.72rem,.88vw,.95rem);line-height:1.5}
+  .preview__frame{height:clamp(150px,30vh,320px)}
   .panel{padding:clamp(10px,1.3vw,20px) clamp(12px,1.6vw,24px)}
   .flip{min-height:clamp(120px,19vh,210px)}
   .carousel{min-height:clamp(120px,20vh,210px);padding:clamp(16px,2.4vw,34px)}

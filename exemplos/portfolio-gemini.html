@@ -1,0 +1,905 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Portfólio | Aluno 1º Ano Ômega</title>
+    
+    <!-- Fontes do Google: JetBrains Mono (Terminal) e IBM Plex Sans (Leitura) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;600;700&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+    
+    <!-- Biblioteca Canvas Confetti -->
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+
+    <style>
+        /* -------------------------------------------
+           VARIÁVEIS CSS (PALETA E FONTES)
+        ------------------------------------------- */
+        :root {
+            /* Paleta Neon Noturno (Padrão/Escuro) */
+            --bg: #0D0F1A;
+            --text: #E6E8F2;
+            --primary: #00E5FF;
+            --secondary: #7C3AED;
+            --highlight: #FF2E88;
+            --success: #05C46B; /* Verde equilibrado no escuro */
+            --card-bg: rgba(20, 22, 38, 0.85);
+            --nav-bg: rgba(13, 15, 26, 0.9);
+            --footer-bg: rgba(0, 0, 0, 0.5);
+            
+            --font-main: 'IBM Plex Sans', sans-serif;
+            --font-mono: 'JetBrains Mono', monospace;
+        }
+
+        /* Tema Claro */
+        [data-theme="light"] {
+            --bg: #E6E8F2;
+            --text: #0D0F1A;
+            --primary: #008B99; 
+            --secondary: #5B21B6;
+            --highlight: #D8005A;
+            --success: #027A31; /* Verde forte no claro */
+            --card-bg: rgba(255, 255, 255, 0.85);
+            --nav-bg: rgba(230, 232, 242, 0.9);
+            --footer-bg: rgba(200, 205, 220, 0.5);
+        }
+
+        /* -------------------------------------------
+           REGRAS GERAIS E RESET
+        ------------------------------------------- */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            cursor: none; /* Esconde cursor padrão para usar o personalizado */
+        }
+
+        body {
+            font-family: var(--font-main);
+            background-color: var(--bg);
+            color: var(--text);
+            overflow-x: hidden;
+            transition: background-color 0.5s, color 0.5s;
+        }
+
+        h1, h2, h3, .font-mono {
+            font-family: var(--font-mono);
+        }
+
+        a {
+            color: var(--primary);
+            text-decoration: none;
+            transition: 0.3s;
+        }
+
+        a:hover {
+            color: var(--highlight);
+        }
+
+        /* -------------------------------------------
+           EFEITOS DE FUNDO (CHUVA E CIDADE)
+        ------------------------------------------- */
+        .city-background {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 30vh;
+            background: linear-gradient(transparent, var(--bg) 90%), 
+                        url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100"><rect x="10" y="40" width="20" height="60" fill="%237C3AED" opacity="0.1"/><rect x="40" y="20" width="25" height="80" fill="%2300E5FF" opacity="0.1"/><rect x="75" y="50" width="15" height="50" fill="%23FF2E88" opacity="0.1"/></svg>');
+            background-size: 200px auto;
+            z-index: -2;
+            pointer-events: none;
+        }
+
+        .rain-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            pointer-events: none;
+            overflow: hidden;
+        }
+
+        .raindrop {
+            position: absolute;
+            bottom: 100%;
+            width: 2px;
+            height: 20px;
+            background: linear-gradient(transparent, var(--primary));
+            animation: fall linear infinite;
+        }
+
+        @keyframes fall {
+            to { transform: translateY(100vh); }
+        }
+
+        /* -------------------------------------------
+           CURSOR PERSONALIZADO
+        ------------------------------------------- */
+        .custom-cursor {
+            position: fixed;
+            width: 20px;
+            height: 20px;
+            border: 2px solid var(--primary);
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 10000;
+            transform: translate(-50%, -50%);
+            transition: width 0.2s, height 0.2s, background-color 0.2s;
+        }
+
+        .custom-cursor.hovering {
+            width: 30px;
+            height: 30px;
+            background-color: rgba(0, 229, 255, 0.2);
+            border-color: var(--highlight);
+        }
+
+        /* -------------------------------------------
+           INTERRUPTOR DE LUZ (OVERLAY INICIAL)
+        ------------------------------------------- */
+        #lights-off-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background-color: #050505;
+            z-index: 9999;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            transition: opacity 0.8s ease-out, visibility 0.8s;
+        }
+
+        .switch-btn {
+            padding: 15px 30px;
+            font-size: 1.2rem;
+            font-family: var(--font-mono);
+            background: transparent;
+            color: rgba(255, 255, 255, 0.5); /* Ajustado para leitura no escuro */
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            text-transform: uppercase;
+            box-shadow: 0 0 10px rgba(0,0,0,0.5);
+            transition: 0.3s;
+        }
+
+        .switch-btn:hover {
+            color: #00E5FF;
+            border-color: #00E5FF;
+            box-shadow: 0 0 20px #00E5FF, inset 0 0 10px #00E5FF;
+            text-shadow: 0 0 5px #00E5FF;
+        }
+
+        /* -------------------------------------------
+           NAVEGAÇÃO E BARRA FIXA
+        ------------------------------------------- */
+        nav {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            padding: 15px 5%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: var(--nav-bg);
+            backdrop-filter: blur(10px);
+            z-index: 100;
+            border-bottom: 1px solid var(--secondary);
+            transition: background 0.5s;
+        }
+
+        .nav-links a {
+            margin-left: 20px;
+            font-family: var(--font-mono);
+            font-size: 0.9rem;
+            text-transform: uppercase;
+        }
+
+        .btn-outline {
+            background: transparent;
+            color: var(--text);
+            border: 2px solid var(--primary);
+            padding: 8px 16px;
+            font-family: var(--font-mono);
+            text-transform: uppercase;
+            transition: 0.3s ease-out;
+        }
+
+        .btn-outline:hover {
+            background: var(--primary);
+            color: var(--bg);
+            box-shadow: 0 0 15px var(--primary);
+        }
+
+        /* -------------------------------------------
+           ANIMAÇÃO DE SCROLL (BLUR PARA NÍTIDO)
+        ------------------------------------------- */
+        .scroll-reveal {
+            opacity: 0;
+            filter: blur(10px);
+            transform: translateY(30px);
+            transition: all 0.8s ease-out;
+        }
+
+        .scroll-reveal.visible {
+            opacity: 1;
+            filter: blur(0);
+            transform: translateY(0);
+        }
+
+        /* -------------------------------------------
+           SEÇÕES E LAYOUT
+        ------------------------------------------- */
+        section {
+            padding: 100px 5%;
+            min-height: 80vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        /* Hero - Cartão de Visita */
+        #hero {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding-top: 60px;
+        }
+
+        .business-card {
+            background: var(--card-bg);
+            border: 1px solid var(--secondary);
+            padding: 40px;
+            border-radius: 8px;
+            display: flex;
+            gap: 40px;
+            max-width: 900px;
+            width: 100%;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5), 0 0 20px rgba(124, 58, 237, 0.2);
+            align-items: center;
+            position: relative;
+            overflow: hidden;
+            transition: background 0.5s;
+        }
+
+        /* Avatar Polaroid */
+        .polaroid {
+            background: #fff;
+            padding: 10px 10px 30px 10px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.5);
+            transform: rotate(-3deg);
+            transition: 0.3s;
+            flex-shrink: 0;
+        }
+
+        .polaroid:hover {
+            transform: rotate(0deg) scale(1.05);
+            box-shadow: 0 10px 25px var(--highlight);
+        }
+
+        .polaroid img {
+            width: 200px;
+            height: 200px;
+            object-fit: cover;
+            filter: grayscale(20%) contrast(120%);
+        }
+
+        .hero-text h1 {
+            font-size: 2.5rem;
+            color: var(--primary);
+            text-shadow: 0 0 10px rgba(0, 229, 255, 0.5);
+            margin-bottom: 10px;
+            word-break: break-word;
+        }
+
+        /* Confete trigger no nome - Cada letra em um span */
+        .hero-text h1 span {
+            display: inline-block;
+            transition: 0.2s;
+        }
+        .hero-text h1 span:hover {
+            color: var(--highlight);
+            transform: scale(1.05);
+        }
+
+        .hero-text p.subtitle {
+            font-size: 1.2rem;
+            color: var(--highlight);
+            margin-bottom: 20px;
+            font-family: var(--font-mono);
+        }
+
+        .hero-tags {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin-bottom: 15px;
+        }
+
+        .tag {
+            background: rgba(124, 58, 237, 0.2);
+            border: 1px solid var(--secondary);
+            padding: 5px 10px;
+            font-size: 0.8rem;
+            font-family: var(--font-mono);
+        }
+
+        /* -------------------------------------------
+           SEÇÃO ENTREGAS (LETREIRO NEON E CARROSSEL)
+        ------------------------------------------- */
+        .neon-sign-container {
+            border: 4px solid var(--highlight);
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 0 15px var(--highlight), inset 0 0 15px var(--highlight);
+            position: relative;
+        }
+
+        .neon-title {
+            position: absolute;
+            top: -20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: var(--bg);
+            padding: 0 20px;
+            color: var(--highlight);
+            text-shadow: 0 0 10px var(--highlight);
+            text-transform: uppercase;
+            font-family: var(--font-mono);
+            letter-spacing: 2px;
+            transition: background 0.5s;
+        }
+
+        .carousel-controls {
+            display: flex;
+            justify-content: flex-end;
+            margin-bottom: 15px;
+            gap: 10px;
+        }
+
+        .carousel-btn {
+            background: var(--card-bg);
+            border: 2px solid var(--text);
+            color: var(--text);
+            padding: 5px 15px;
+            font-family: var(--font-mono);
+            font-size: 1.2rem;
+            transition: 0.3s;
+        }
+        
+        .carousel-btn:hover {
+            background: var(--text);
+            color: var(--bg);
+            box-shadow: 0 0 10px var(--text);
+        }
+
+        .cards-wrapper {
+            display: flex;
+            gap: 20px;
+            overflow-x: auto;
+            scroll-behavior: smooth;
+            padding-bottom: 20px;
+            /* Esconde scrollbar nativa */
+            scrollbar-width: none; 
+        }
+        .cards-wrapper::-webkit-scrollbar { display: none; }
+
+        .card {
+            min-width: 300px;
+            background: var(--bg);
+            border: 1px solid var(--primary);
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            transition: filter 0.3s, transform 0.3s, background 0.5s;
+        }
+
+        /* Efeito Hover do Card - Cores Invertidas */
+        .card:hover {
+            filter: invert(100%);
+            transform: translateY(-5px);
+        }
+
+        .card-number {
+            font-family: var(--font-mono);
+            color: var(--secondary);
+            font-size: 1.5rem;
+            font-weight: bold;
+        }
+
+        .card h3 {
+            font-size: 1.2rem;
+            margin-bottom: 5px;
+        }
+
+        .card-date {
+            font-size: 0.8rem;
+            opacity: 0.7;
+        }
+
+        .card-learning {
+            font-style: italic;
+            font-size: 0.9rem;
+            margin-bottom: 15px;
+            flex-grow: 1;
+        }
+
+        .status-badge {
+            align-self: flex-start;
+            padding: 3px 8px;
+            font-size: 0.7rem;
+            font-family: var(--font-mono);
+            text-transform: uppercase;
+            border: 1px solid;
+        }
+
+        .status-done {
+            color: var(--success);
+            border-color: var(--success);
+            background: rgba(5, 196, 107, 0.1);
+        }
+
+        [data-theme="light"] .status-done {
+            background: rgba(2, 122, 49, 0.1);
+        }
+
+        .status-soon {
+            color: #FFA500;
+            border-color: #FFA500;
+            background: rgba(255, 165, 0, 0.1);
+        }
+
+        .card.disabled-card {
+            opacity: 0.5;
+            border-style: dashed;
+        }
+        .card.disabled-card:hover {
+            filter: none; /* Desativa inversão de cor nos indisponíveis */
+            transform: none;
+        }
+
+        .card-link {
+            display: inline-block;
+            text-align: center;
+            margin-top: auto;
+        }
+
+        /* -------------------------------------------
+           SEÇÃO MANIFESTO
+        ------------------------------------------- */
+        .manifesto-box {
+            background: repeating-linear-gradient(
+                45deg,
+                rgba(124, 58, 237, 0.05),
+                rgba(124, 58, 237, 0.05) 10px,
+                transparent 10px,
+                transparent 20px
+            );
+            border: 1px solid var(--secondary);
+            padding: 30px;
+            border-radius: 5px;
+        }
+
+        .manifesto-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.8s ease-out;
+            line-height: 1.6;
+        }
+
+        .manifesto-content.open {
+            max-height: 2000px; /* Suficiente para texto grande */
+            margin-top: 20px;
+        }
+
+        /* -------------------------------------------
+           RODAPÉ E EXTRAS
+        ------------------------------------------- */
+        footer {
+            border-top: 1px solid var(--primary);
+            padding: 40px 5%;
+            text-align: center;
+            background: var(--footer-bg);
+            position: relative;
+            transition: background 0.5s;
+        }
+
+        .footer-tux {
+            font-family: monospace;
+            white-space: pre;
+            color: var(--text);
+            opacity: 0.5;
+            font-size: 0.6rem;
+            line-height: 1.1;
+            margin-bottom: 20px;
+            display: inline-block;
+        }
+
+        .timer {
+            font-family: var(--font-mono);
+            font-size: 0.8rem;
+            margin-top: 20px;
+            color: var(--highlight);
+        }
+
+        /* Easter Egg Modal do Tux */
+        #tux-easter-egg {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, 100vh);
+            z-index: 100000;
+            transition: transform 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            text-align: center;
+        }
+        #tux-easter-egg.show {
+            transform: translate(-50%, -50%);
+        }
+        .speech-bubble {
+            background: #fff;
+            color: #000;
+            padding: 10px 20px;
+            border-radius: 20px;
+            font-family: var(--font-mono);
+            margin-bottom: 10px;
+            position: relative;
+            font-weight: bold;
+        }
+        .speech-bubble::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            border-width: 10px 10px 0;
+            border-style: solid;
+            border-color: #fff transparent transparent transparent;
+            transform: translateX(-50%);
+        }
+
+        /* -------------------------------------------
+           RESPONSIVIDADE E ACESSIBILIDADE
+        ------------------------------------------- */
+        @media (max-width: 768px) {
+            .business-card {
+                flex-direction: column;
+                text-align: center;
+                padding: 20px;
+            }
+            .polaroid { transform: rotate(0); }
+            .hero-tags { justify-content: center; }
+            .nav-links { display: none; }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            *, ::before, ::after {
+                animation: none !important;
+                transition: none !important;
+                filter: none !important;
+            }
+            .scroll-reveal { opacity: 1; transform: none; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Fundo de Cidade e Chuva -->
+    <div class="city-background"></div>
+    <div class="rain-container" id="rain-box"></div>
+
+    <!-- Cursor Personalizado -->
+    <div class="custom-cursor" id="cursor"></div>
+
+    <!-- Tela Inicial de Interruptor -->
+    <div id="lights-off-overlay">
+        <button class="switch-btn" id="turn-on-btn">Boot do Sistema [Ligar]</button>
+    </div>
+
+    <!-- Navegação -->
+    <nav>
+        <div class="logo font-mono" style="color: var(--primary); font-weight: bold; font-size: 1.2rem;">&lt;Meu_Perfil/&gt;</div>
+        <div class="nav-links">
+            <a href="#sobre">Puxar a Capivara (Sobre mim)</a>
+            <a href="#entregas">Meus Projetos</a>
+            <a href="#manifesto">Meu Manifesto</a>
+        </div>
+        <button class="btn-outline" id="theme-toggle">Hackear Tema</button>
+    </nav>
+
+    <!-- Header / Hero -->
+    <header id="hero" class="scroll-reveal">
+        <div class="business-card">
+            <div class="polaroid">
+                <!-- Substituir pela foto do aluno -->
+                <img src="https://via.placeholder.com/200x200.png?text=[SUA+FOTO]" alt="Foto do aluno em estilo polaroid" id="my-avatar">
+            </div>
+            <div class="hero-text">
+                <!-- O aluno deve colocar uma letra em cada span para o confete funcionar por letra -->
+                <h1 id="my-name">
+                    <span>[</span><span>S</span><span>E</span><span>U</span> <span>N</span><span>O</span><span>M</span><span>E</span><span>]</span>
+                </h1>
+                <p class="subtitle">"Construindo o futuro em código"</p>
+                <div class="hero-tags">
+                    <span class="tag">HTML & CSS</span>
+                    <span class="tag">Lógica</span>
+                    <span class="tag">Games</span>
+                </div>
+                <p style="margin-bottom: 20px;">Estudante do 1º Ano Ômega • SESI/SENAI Varginha</p>
+                <a href="mailto:[SEU-EMAIL-AQUI]" class="btn-outline">Estabelecer Conexão</a>
+            </div>
+        </div>
+    </header>
+
+    <main>
+        <!-- Seção Sobre Mim -->
+        <section id="sobre" class="scroll-reveal">
+            <h2 class="font-mono" style="color: var(--primary); margin-bottom: 20px; font-size: 2rem;">&gt; Quem_Sou_Eu.exe</h2>
+            <div style="max-width: 800px; font-size: 1.1rem; line-height: 1.6;">
+                <p style="margin-bottom: 15px;">
+                    Fala aí! Sou estudante do <strong>1º Ano Ômega</strong> do Ensino Médio Integrado no SESI/SENAI de Varginha. Estou dando meus primeiros passos no universo do desenvolvimento web, mergulhando nas lógicas de programação e aprendendo as bases de hardware nas aulas do Prof. Iago. 
+                </p>
+                <p>
+                    Curto muito o universo dos games, tecnologia e entender como as máquinas funcionam por baixo dos panos. Meu objetivo aqui é registrar toda a minha evolução: dos primeiros códigos em HTML que quebraram no navegador até conseguir estruturar sistemas completos. Quando não estou fazendo os desafios da aula, gosto de passar o tempo com [PREENCHA SEU HOBBY AQUI, EX: música, jogos, esportes].
+                </p>
+            </div>
+        </section>
+
+        <!-- Seção Entregas -->
+        <section id="entregas" class="scroll-reveal">
+            <div class="neon-sign-container">
+                <div class="neon-title">Minhas Entregas</div>
+                
+                <!-- "Controle Remoto" do Carrossel -->
+                <div class="carousel-controls">
+                    <button class="carousel-btn" id="btn-left" aria-label="Rolar para esquerda">&lt;</button>
+                    <button class="carousel-btn" id="btn-right" aria-label="Rolar para direita">&gt;</button>
+                </div>
+
+                <div class="cards-wrapper" id="cards-container">
+                    
+                    <!-- Card 1 -->
+                    <div class="card">
+                        <div class="card-number">#01</div>
+                        <h3>Capa do Meu Álbum</h3>
+                        <div class="card-date">[PREENCHER DATA]</div>
+                        <p class="card-learning">[PREENCHER: O que você aprendeu com esse desafio inicial de HTML/CSS?]</p>
+                        <span class="status-badge status-done">Compilado (Concluída)</span>
+                        <a href="[PREENCHER SEU LINK GITHUB]" class="btn-outline card-link" target="_blank" style="margin-top: 15px;">Acessar Repositório</a>
+                    </div>
+
+                    <!-- Card 2 -->
+                    <div class="card">
+                        <div class="card-number">#02</div>
+                        <h3>Dashboard Quem Sou Eu</h3>
+                        <div class="card-date">[PREENCHER DATA]</div>
+                        <p class="card-learning">[PREENCHER: O que você aprendeu estruturando este dashboard?]</p>
+                        <span class="status-badge status-done">Compilado (Concluída)</span>
+                        <a href="[PREENCHER SEU LINK GITHUB]" class="btn-outline card-link" target="_blank" style="margin-top: 15px;">Acessar Repositório</a>
+                    </div>
+
+                    <!-- Card 3 -->
+                    <div class="card">
+                        <div class="card-number">#03</div>
+                        <h3>Árvore das Profissões 2.0</h3>
+                        <div class="card-date">[PREENCHER DATA]</div>
+                        <p class="card-learning">[PREENCHER: Qual foi a dificuldade ou aprendizado neste mapeamento?]</p>
+                        <span class="status-badge status-done">Compilado (Concluída)</span>
+                        <a href="[PREENCHER SEU LINK GITHUB]" class="btn-outline card-link" target="_blank" style="margin-top: 15px;">Acessar Repositório</a>
+                    </div>
+
+                    <!-- Card 4 (Em breve) -->
+                    <div class="card disabled-card">
+                        <div class="card-number">#04</div>
+                        <h3>Âncoras de Carreira</h3>
+                        <div class="card-date">Missão Futura...</div>
+                        <p class="card-learning">Carregando módulos de aprendizado...</p>
+                        <span class="status-badge status-soon">No Forno (Em breve)</span>
+                    </div>
+
+                    <!-- Card 5 (Em breve) -->
+                    <div class="card disabled-card">
+                        <div class="card-number">#05</div>
+                        <h3>Manifesto</h3>
+                        <div class="card-date">Projeto Final...</div>
+                        <p class="card-learning">Sintetizando minhas diretrizes base...</p>
+                        <span class="status-badge status-soon">No Forno (Em breve)</span>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+
+        <!-- Seção Manifesto -->
+        <section id="manifesto" class="scroll-reveal">
+            <div class="manifesto-box">
+                <h2 class="font-mono" style="color: var(--secondary); margin-bottom: 10px;">&gt; Manifesto_Pessoal.log</h2>
+                <button class="btn-outline" id="toggle-manifesto" style="margin-bottom: 20px;">Ler Manifesto Completo</button>
+                
+                <div class="manifesto-content" id="manifesto-text">
+                    <p>
+                        [ALUNO: APAGUE ESTE AVISO E COLE SEU MANIFESTO AQUI. ESCREVA UM TEXTO DE 400 A 600 PALAVRAS SOBRE QUEM VOCÊ É, SUAS REGRAS DE VIDA E COMO VOCÊ ENXERGA O SEU FUTURO NA TECNOLOGIA.]
+                    </p>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Rodapé -->
+    <footer>
+        <!-- O Tux - Símbolo do Linux -->
+        <div class="footer-tux" title="O bom e velho Tux">
+    .--.
+   |o_o |
+   |:_/ |
+  //   \ \
+ (|     | )
+/'\_   _/`\
+\___)=(___/
+        </div>
+        
+        <div>
+            <h3 class="font-mono" style="color: var(--primary);">[SEU NOME AQUI]</h3>
+            <p>Desenvolvido para a disciplina do Prof. Iago Teixeira | 1º Ano Ômega</p>
+            <p>Meu GitHub: <a href="https://github.com/[SEU-USUARIO]" target="_blank">github.com/[SEU-USUARIO]</a></p>
+        </div>
+        
+        <div class="timer">Página online há <span id="time-counter">0</span> segundos.</div>
+    </footer>
+
+    <!-- Elemento do Easter Egg -->
+    <div id="tux-easter-egg">
+        <div class="speech-bubble">Acesso Root liberado! Não conta pro Prof. Iago!</div>
+        <!-- Tux em SVG base64 -->
+        <img src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><circle cx='50' cy='50' r='45' fill='%23000'/><ellipse cx='50' cy='60' rx='35' ry='30' fill='%23fff'/><circle cx='35' cy='35' r='8' fill='%23fff'/><circle cx='65' cy='35' r='8' fill='%23fff'/><circle cx='35' cy='35' r='3' fill='%23000'/><circle cx='65' cy='35' r='3' fill='%23000'/><polygon points='40,45 60,45 50,55' fill='orange'/></svg>" width="150" alt="Tux Easter Egg">
+    </div>
+
+    <!-- Lógica JavaScript -->
+    <script>
+        // 1. Cursor Personalizado
+        const cursor = document.getElementById('cursor');
+        document.addEventListener('mousemove', (e) => {
+            cursor.style.left = e.clientX + 'px';
+            cursor.style.top = e.clientY + 'px';
+        });
+
+        // Efeito de hover no cursor
+        const interactables = document.querySelectorAll('a, button');
+        interactables.forEach(el => {
+            el.addEventListener('mouseenter', () => cursor.classList.add('hovering'));
+            el.addEventListener('mouseleave', () => cursor.classList.remove('hovering'));
+        });
+
+        // 2. Interruptor de Luz
+        const overlay = document.getElementById('lights-off-overlay');
+        const turnOnBtn = document.getElementById('turn-on-btn');
+        turnOnBtn.addEventListener('click', () => {
+            overlay.style.opacity = '0';
+            setTimeout(() => {
+                overlay.style.visibility = 'hidden';
+            }, 800);
+        });
+
+        // 3. Tema Claro/Escuro
+        const themeBtn = document.getElementById('theme-toggle');
+        if (window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches) {
+            document.documentElement.setAttribute('data-theme', 'light');
+        }
+
+        themeBtn.addEventListener('click', () => {
+            const currentTheme = document.documentElement.getAttribute('data-theme');
+            if (currentTheme === 'light') {
+                document.documentElement.removeAttribute('data-theme');
+            } else {
+                document.documentElement.setAttribute('data-theme', 'light');
+            }
+        });
+
+        // 4. Animação de Chuva
+        const rainBox = document.getElementById('rain-box');
+        const isReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+        if (!isReducedMotion) {
+            for (let i = 0; i < 40; i++) {
+                let drop = document.createElement('div');
+                drop.classList.add('raindrop');
+                drop.style.left = Math.random() * 100 + 'vw';
+                drop.style.animationDuration = (Math.random() * 1 + 0.5) + 's';
+                drop.style.animationDelay = Math.random() * 2 + 's';
+                rainBox.appendChild(drop);
+            }
+        }
+
+        // 5. Scroll Reveal
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if(entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, { threshold: 0.1 });
+
+        document.querySelectorAll('.scroll-reveal').forEach(el => observer.observe(el));
+
+        // 6. Carrossel
+        const cardsContainer = document.getElementById('cards-container');
+        const btnLeft = document.getElementById('btn-left');
+        const btnRight = document.getElementById('btn-right');
+
+        btnRight.addEventListener('click', () => {
+            cardsContainer.scrollBy({ left: 320, behavior: 'smooth' });
+        });
+        btnLeft.addEventListener('click', () => {
+            cardsContainer.scrollBy({ left: -320, behavior: 'smooth' });
+        });
+
+        // 7. Manifesto Accordion
+        const toggleManifesto = document.getElementById('toggle-manifesto');
+        const manifestoText = document.getElementById('manifesto-text');
+        
+        toggleManifesto.addEventListener('click', () => {
+            manifestoText.classList.toggle('open');
+            if(manifestoText.classList.contains('open')) {
+                toggleManifesto.textContent = "Recolher Manifesto";
+            } else {
+                toggleManifesto.textContent = "Ler Manifesto Completo";
+            }
+        });
+
+        // 8. Confete no Nome
+        const myName = document.getElementById('my-name');
+        myName.addEventListener('click', (e) => {
+            if(typeof confetti === 'function') {
+                confetti({
+                    particleCount: 100,
+                    spread: 70,
+                    origin: { y: 0.6 },
+                    colors: ['#00E5FF', '#7C3AED', '#FF2E88']
+                });
+            }
+        });
+
+        // 9. Easter Egg Secreto (Sequência de Teclas T U X)
+        let keys = [];
+        let lastKeyTime = Date.now();
+        const easterEgg = document.getElementById('tux-easter-egg');
+
+        window.addEventListener('keydown', (e) => {
+            const currentTime = Date.now();
+            if (currentTime - lastKeyTime > 1500) {
+                keys = []; 
+            }
+            lastKeyTime = currentTime;
+            
+            keys.push(e.key.toLowerCase());
+            
+            if (keys.length > 3) {
+                keys.shift();
+            }
+
+            if (keys.join('') === 'tux') {
+                keys = []; 
+                easterEgg.classList.add('show');
+                
+                setTimeout(() => {
+                    easterEgg.classList.remove('show');
+                }, 3500);
+            }
+        });
+
+        // 10. Contador de Tempo
+        const timeCounter = document.getElementById('time-counter');
+        let seconds = 0;
+        setInterval(() => {
+            seconds++;
+            timeCounter.textContent = seconds;
+        }, 1000);
+
+    </script>
+</body>
+</html>
